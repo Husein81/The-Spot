@@ -13,8 +13,8 @@ export const createProduct = asyncHandler(async (req, res) => {
 
 export const getProducts = asyncHandler(async(req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = req.query.isAdmin === 'true' ? 10 : 8;
-  const skip = (page - 1)*limit;
+  const limit = req.query.isAdmin === 'true' ? 100000 : 8;
+  const skip = (page - 1) * limit;
   
   const keyword = req.query.keyword
   ? { title: { $regex: req.query.keyword, $options: "i" } }
@@ -70,8 +70,7 @@ export const updateProduct = asyncHandler(async(req, res, next) => {
 });
 
 export const deleteProduct = asyncHandler(async(req, res) => {
-    const product = await Product.findById(req.params.id);
-
+  const product = await Product.findById(req.params.id);
     if(!product){
       throw new NotFoundError("product not found");
     }

@@ -1,10 +1,13 @@
 import { CircularProgress } from '@mui/material';
 import React from 'react';
 
-const Loader: React.FC = () => {
+interface Props{
+  color?: string;
+}
+const Loader: React.FC<Props> = ({ color = "#1976d2" }) => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <CircularProgress />
+      <CircularProgress sx={{color:`${color}`}}/>
     </div>
   );
 };

@@ -2,15 +2,17 @@ import { Button, Container, Grid} from "@mui/material";
 import Loader from "../components/Loader";
 import { useNavigate } from "react-router-dom";
 import { useGetProductsQuery } from "../redux/slices/productApi";
-import ProductList from "../components/ProductComponents/ProductList";
+import ProductTable from "../components/ProductComponents/productTable";
+
 
 
 const ProductPage = () => {
   const navigate = useNavigate();
   const { data, isLoading }  = useGetProductsQuery({
     isAdmin: true
-   });
-   
+  });
+  const products = data?.products || [];
+
   return (
     <Container >
       {isLoading ? (
@@ -28,7 +30,7 @@ const ProductPage = () => {
               </Button>
             </Grid>
             <Grid item xs={12} >
-              <ProductList products={data.products}/>
+                <ProductTable products={products}/>
             </Grid>
           </Grid>
       )}

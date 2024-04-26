@@ -5,78 +5,132 @@ import {
     FormControl, 
     FormGroup, 
     FormLabel,  
-    IconButton, 
-    InputAdornment, 
+    IconButton,  
     TextField, 
     Typography 
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Product } from "../../models/Product";
 import { useNavigate, useParams } from "react-router-dom";
-import {v4 as uuid} from 'uuid';
-import agent from "../../api/agen";
-import { UploadFileOutlined } from "@mui/icons-material";
+import { 
+    useCreateProductMutation, 
+    useGetProductQuery, 
+    useUpdateProductMutation 
+} from "../../redux/slices/productApi";
+import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import { app } from "../../../firebase";
+import { Upload } from "@mui/icons-material";
+import Loader from "../Loader";
+
 
 const ProductForm = () => {
-    const { id } = useParams();
+    const { id: productId  } = useParams();
     const navigate = useNavigate();
-
-    const [isLoading, setIsLoading] = useState(false); 
+    const [images, setImages] = useState<FileList | null>(null);
+    const [loadingUpload, setLoadingUpload] = useState(false);
+    const [createProduct, {isLoading: loadingCreate}] = useCreateProductMutation();
+    const [updateProduct, {isLoading: loadingUpdate}] = useUpdateProductMutation();
     const [product, setProduct] = useState<Product>({
         _id: '',
         title: '',
-        description:'',
-        price: '',
+        description: '',
+        price: 0,
         quantity: '',
+        imageUrls:[]
     });
     
-    const fetchProduct = async (id: string) => {
-       setIsLoading(true);
-       try {
-          const response = await agent.Products.fetchById(id);
-          setProduct(response); 
-        } catch (err) {
-        console.error("Error fetching products:", err);
-        } finally { 
-          setIsLoading(false);
-        }
-    };
+    const { data: fetchProduct , isLoading } = useGetProductQuery(productId!);
+        
     useEffect(() => {
-        if(id){
-            fetchProduct(id);
+        if(fetchProduct){
+          setProduct(fetchProduct);
         }
-    },[id]);
-
-
+    },[fetchProduct]);
+        
+    
     const handleChange = (e: React.ChangeEvent<HTMLInputElement |HTMLTextAreaElement>) => {
         const { name , value } = e.target;
         setProduct({...product, [name]: value});
     }
-    const createProduct = async(product: Product) => {
-        product._id = uuid();
-        await agent.Products.create(product);
+
+    const storeImage = (file: File): Promise<string> => {
+      return new Promise((resolve, reject) =>{
+      const storage = getStorage(app);
+      const filename = new Date().getTime() + file.name;
+      const storageRef = ref(storage, filename);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on(
+          'state_changed',
+          (snapshot) => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log(`Upload is ${progress}% done`);
+          },
+          (error) => reject(error),
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref)
+              .then((downloadUrl) => resolve(downloadUrl));
+          }
+        )
+      });
+    };
+    const handleImageSubmit = () => {
+      const newImage = images as FileList
+      if(newImage.length > 0 && newImage.length + product.imageUrls.length < 7){
+        setLoadingUpload(true);
+        const promises: Promise<string>[] = [];
+        for(let i = 0; i < newImage.length; i++ ){
+          promises.push(storeImage(newImage.item(i) as File))
+        }
+        Promise.all(promises)
+          .then((urls) => 
+            setProduct({
+            ...product,
+            imageUrls: product.imageUrls.concat(urls)
+          }))
+          .then(() => setLoadingUpload(false))
+          .catch(() => {
+            setLoadingUpload(false);
+            console.log("Image upload failed (2 mb max per image)");
+          })
+      } else {
+        setLoadingUpload(false);
+        console.log("You can only upload 6 images per listing");
+      }
+    };
+    
+    const handleRemoveImage = (url: string, index: number) => {
+      const imageName = url.split('/')[7].split('?')[0];
+      const storage = getStorage(app); 
+      const storageRef = ref(storage, imageName);
+      deleteObject(storageRef)
+        .catch(() => 
+          console.log('Unable to delete the image')
+        );
+        setProduct({
+          ...product,
+          imageUrls: product.imageUrls.filter((_, i) => i !== index) 
+        })
     }
-    const updateProduct = async (product: Product) => {
-        await agent.Products.update(product);
-    }
-    const handleSubmit = () => {
-        if(!product._id){
-            createProduct(product);
-            navigate('/products');
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        
+        if(!productId){
+            await createProduct(product);
+            navigate('/products')
         }
         else{
-            updateProduct(product);
+            await updateProduct(product);
             navigate('/products');
-
         }
     }
     
-    
+    if(isLoading) return <Loader />;
+
   return (
     <Container component={'form'} onSubmit={handleSubmit} autoComplete="off" sx={{display:'flex', boxShadow:2, borderRadius:1}}>
         <FormControl component={'fieldset'} variant="standard" fullWidth>
             <FormLabel component={'legend'}>
-                <Typography variant="h4" color={'text.primary'} >{id ? 'Edit Product' : 'Create Product'}</Typography>
+                <Typography variant="h4" color={'text.primary'} mt={2} >{productId ? 'Edit Product' : 'Create Product'}</Typography>
             </FormLabel>
             <FormGroup>
                 <TextField
@@ -86,25 +140,40 @@ const ProductForm = () => {
                 value={product.title}
                 onChange={handleChange}
                 />
-                <Box>
-                <TextField
-                    variant="standard"
-                    type="file"
-                    InputProps={{
-                        disabled: true,
-                        endAdornment: (
-                        <InputAdornment position="end">
-                            <IconButton >
-                                <UploadFileOutlined />
-                            </IconButton>
-                        </InputAdornment>
-                        ),
-                    }}
-                    />
-                    <Button variant="contained" component="span" >
-                        Upload
-                        </Button>
+                <Box display={'flex'}  gap={2}>
+                <IconButton component="label" sx={{ display: 'inline-block', border:1, borderRadius:1, borderColor:'#aeaeae' }}>
+                  <input 
+                  type="file" 
+                  accept="image/*" 
+                  hidden 
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setImages(e.target.files)} multiple />
+                  <Upload  fontSize="large"/>
+                </IconButton>
+                <Button variant="contained" onClick={handleImageSubmit}>
+                    {loadingUpload ? 'Uploading...' : 'Upload'}
+                </Button>
                 </Box>
+                <Box sx={{my:2, display:'flex', gap:2}}>
+                {product.imageUrls.length > 0 && product.imageUrls.map((url: string, i: number) => (
+                <Box
+                 key={i}
+                 className="flex justify-between p-3 border items-center"
+                 width={200}
+                >
+                <img
+                  src={url}
+                  alt="listing image"
+                  className="w-20 h-20 object-contain rounded-lg"
+                />
+                <Button
+                  sx={{'&:hover':{bgcolor:'transparent'}}}
+                  onClick={() => handleRemoveImage(url, i)}>
+                  Delete
+                </Button>
+                
+              </Box>
+            ))}
+            </Box>
                 <TextField
                 margin="normal"
                 label={'Description'}
@@ -130,7 +199,7 @@ const ProductForm = () => {
                 />
             </FormGroup>
             <Box display={'flex'} justifyContent={'space-between'} py={2} >
-                <Button variant="contained" type="submit" >{isLoading ? 'Submitting...' : 'Submit'}</Button>
+                <Button variant="contained" type="submit" >{loadingCreate || loadingUpdate ? <Loader color="#fff"  /> : 'Submit'}</Button>
                 <Button variant="outlined" onClick={() => navigate('/products')}>Cancel</Button>
             </Box>
         </FormControl>

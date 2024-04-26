@@ -1,22 +1,28 @@
 import { 
   IconButton,
+    InputAdornment,
     Paper,
     Table,
     TableBody, 
     TableCell, 
     TableContainer, 
     TableHead, 
-    TableRow 
+    TableRow, 
+    TextField,
+    Typography
 } from "@mui/material"
 import { Product } from "../../models/Product"
-import { Delete, Edit } from "@mui/icons-material";
+import { Delete, Edit, Search } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import agent from "../../api/agen";
+import { useState } from "react";
 
 interface Props {
-  products: Product[]
+  products: Product[];
 }
-
+interface SearchState {
+  query: string;
+}
 const ProductTable: React.FC<Props> = ({ products }) => {
   const navigate = useNavigate();
   const deleteProduct = async (id: string) => {
@@ -30,10 +36,36 @@ const ProductTable: React.FC<Props> = ({ products }) => {
   const handleDelete = (id: string) => {
     deleteProduct(id);
   }
-  return (
+  const [searchTerm, setSearchTerm] = useState<SearchState>({ query: ''});
+  
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm({ query: e.target.value})
+  }
+
+  const filteredProducts = products.filter( product => 
+    product.title.toLowerCase().includes(searchTerm.query.toLowerCase())
+  );
+  return (     
     <TableContainer  
     component={Paper}>
-    <Table sx={{minHeight:400, maxHeight: 'calc(100vh - 150px)', overflowY:'auto', boxShadow:2}}>
+      <TextField
+        sx={{px:3}}
+        placeholder="search"
+        type="text"
+        margin="normal"
+        value={searchTerm.query}
+        onChange={handleSearchChange}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton>
+                <Search />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+        />
+    <Table sx={{ maxHeight: 'calc(100vh - 150px)', overflowY:'auto', boxShadow:2}}>
       <TableHead>
         <TableRow>
           <TableCell>Name</TableCell>
@@ -43,12 +75,12 @@ const ProductTable: React.FC<Props> = ({ products }) => {
           <TableCell></TableCell>
         </TableRow>
       </TableHead>
-      <TableBody>
-        {products.length > 0 
-        && products.map(product => (
+      <TableBody >
+        {filteredProducts.length > 0 
+        && filteredProducts.map(product => (
           <TableRow  key={product._id}>
             <TableCell>{product.title}</TableCell>
-            <TableCell>{product.price}.00 $</TableCell>
+            <TableCell>{product.price.toFixed(2)} $</TableCell>
             <TableCell>{product.quantity}</TableCell>
             <TableCell sx={{p:0}}>
               <IconButton onClick={() => navigate(`/updateProduct/${product._id}`)}> 
@@ -64,6 +96,7 @@ const ProductTable: React.FC<Props> = ({ products }) => {
         ))}
       </TableBody>
     </Table>
+    {filteredProducts.length ==0 && <Typography color={'error'} sx={{p:2,textAlign:'center'}}>Item Not Found</Typography>}
   </TableContainer>
   )
 };

@@ -28,7 +28,7 @@ const Navbar = () => {
         setMobileOpen(true);
     }
     const menuItems: Item[] = [
-        {name:'Home', path:'/'},
+        {name:'Dashboard', path:'/'},
         {name:'Products', path:'/products'},
         {name:'Categries', path:'/categories'},
     ];

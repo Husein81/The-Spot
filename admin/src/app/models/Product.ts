@@ -1,9 +1,9 @@
 export interface Product {
     _id: string;
-    imageUrls?: string[];
+    imageUrls: string[] ;
     title: string;
     description?: string; // Optional property
-    price: string;
+    price: number;
     quantity: string;
     category?: string; // Assuming category is stored as a string ID
     createdAt?: Date;

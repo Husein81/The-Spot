@@ -2,13 +2,13 @@ import mongoose from "mongoose";
 
 
 const productSchema = mongoose.Schema({
-    imageUrls: {
-        type: Array,
-        required:true,
-    },
     title: {
         type: String,
         required: true,
+    },
+    imageUrls: {
+        type: Array,
+        required:true,
     },
     description: {
         type: String,
@@ -18,15 +18,15 @@ const productSchema = mongoose.Schema({
         required: true,
         default: 0
     },
-    qty: {
-        type: Number,
-        required: true,
-        default: 1
-    },
     quantity: {
         type: Number,
         required: true,
         default: 1
+    },
+    discountPrice: {
+      type: Number,
+      required:true,
+      default: 1,  
     },
     category: {
         type: mongoose.Types.ObjectId,

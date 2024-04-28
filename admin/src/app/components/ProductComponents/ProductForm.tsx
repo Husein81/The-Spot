@@ -1,30 +1,31 @@
 import { 
-    Box,
-    Button,
-    Container, 
-    FormControl, 
-    FormGroup, 
-    FormLabel,  
-    IconButton,  
-    TextField, 
-    Typography 
+  Box,
+  Button,
+  Container, 
+  FormControl, 
+  FormGroup, 
+  FormLabel,  
+  IconButton,  
+  TextField, 
+  Typography, 
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Product } from "../../models/Product";
 import { useNavigate, useParams } from "react-router-dom";
 import { 
-    useCreateProductMutation, 
-    useGetProductQuery, 
-    useUpdateProductMutation 
+  useCreateProductMutation, 
+  useGetProductQuery, 
+  useUpdateProductMutation 
 } from "../../redux/slices/productApi";
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { app } from "../../../firebase";
 import { Upload } from "@mui/icons-material";
 import Loader from "../Loader";
-
+import { v4 as uuid} from 'uuid';
 
 const ProductForm = () => {
     const { id: productId  } = useParams();
+
     const navigate = useNavigate();
     const [images, setImages] = useState<FileList | null>(null);
     const [loadingUpload, setLoadingUpload] = useState(false);
@@ -113,34 +114,36 @@ const ProductForm = () => {
     }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
         if(!productId){
-            await createProduct(product);
-            navigate('/products')
+          product._id = uuid();
+          const data = await createProduct(product);
+          console.log(data)
+          navigate('/products')
         }
         else{
-            await updateProduct(product);
-            navigate('/products');
+          await updateProduct(product);
+          navigate('/products');
         }
     }
     
     if(isLoading) return <Loader />;
 
   return (
-    <Container component={'form'} onSubmit={handleSubmit} autoComplete="off" sx={{display:'flex', boxShadow:2, borderRadius:1}}>
+    <Container component={'form'} onSubmit={handleSubmit} autoComplete="off" sx={{width:880, mb:3,display:'flex',}}>
         <FormControl component={'fieldset'} variant="standard" fullWidth>
             <FormLabel component={'legend'}>
-                <Typography variant="h4" color={'text.primary'} mt={2} >{productId ? 'Edit Product' : 'Create Product'}</Typography>
+                <Typography variant="h2" color={'text.primary'} >{productId ? 'Edit Product' : 'Create Product'}</Typography>
             </FormLabel>
             <FormGroup>
                 <TextField
                 label={'Title'}
+                variant="filled"
                 margin="normal"
                 name={"title"}
                 value={product.title}
                 onChange={handleChange}
                 />
-                <Box display={'flex'}  gap={2}>
+                <Box display={'flex'} gap={2} sx={{py:1}}>
                 <IconButton component="label" sx={{ display: 'inline-block', border:1, borderRadius:1, borderColor:'#aeaeae' }}>
                   <input 
                   type="file" 
@@ -149,15 +152,15 @@ const ProductForm = () => {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setImages(e.target.files)} multiple />
                   <Upload  fontSize="large"/>
                 </IconButton>
-                <Button variant="contained" onClick={handleImageSubmit}>
+                <Button variant="contained" color="secondary" onClick={handleImageSubmit}>
                     {loadingUpload ? 'Uploading...' : 'Upload'}
                 </Button>
                 </Box>
-                <Box sx={{my:2, display:'flex', gap:2}}>
+                <Box sx={{my:2, display:'flex', gap:2,}}>
                 {product.imageUrls.length > 0 && product.imageUrls.map((url: string, i: number) => (
                 <Box
                  key={i}
-                 className="flex justify-between p-3 border items-center"
+                 className="flex justify-between p-3 border  items-center rounded-md"
                  width={200}
                 >
                 <img
@@ -170,12 +173,12 @@ const ProductForm = () => {
                   onClick={() => handleRemoveImage(url, i)}>
                   Delete
                 </Button>
-                
               </Box>
             ))}
             </Box>
                 <TextField
                 margin="normal"
+                variant="filled"
                 label={'Description'}
                 name={'description'}
                 value={product.description}
@@ -185,6 +188,7 @@ const ProductForm = () => {
                 />
                 <TextField
                 margin="normal"
+                variant="filled"
                 label={'Price'}
                 name={"price"}
                 value={product.price}
@@ -192,6 +196,7 @@ const ProductForm = () => {
                 />
                 <TextField
                 margin="normal"
+                variant="filled"
                 label={"quantity"}
                 name={"quantity"}
                 value={product.quantity}
@@ -199,8 +204,8 @@ const ProductForm = () => {
                 />
             </FormGroup>
             <Box display={'flex'} justifyContent={'space-between'} py={2} >
-                <Button variant="contained" type="submit" >{loadingCreate || loadingUpdate ? <Loader color="#fff"  /> : 'Submit'}</Button>
-                <Button variant="outlined" onClick={() => navigate('/products')}>Cancel</Button>
+                <Button variant="contained" color="secondary" type="submit" >{loadingCreate || loadingUpdate ? <Loader color="#fff"  /> : 'Submit'}</Button>
+                <Button variant="outlined" color="secondary"onClick={() => navigate('/products')}>Cancel</Button>
             </Box>
         </FormControl>
     </Container>

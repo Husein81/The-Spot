@@ -1,103 +1,107 @@
 import { 
+  Box,
   IconButton,
-    InputAdornment,
-    Paper,
-    Table,
-    TableBody, 
-    TableCell, 
-    TableContainer, 
-    TableHead, 
-    TableRow, 
-    TextField,
-    Typography
+  Typography,
+  useTheme
 } from "@mui/material"
 import { Product } from "../../models/Product"
-import { Delete, Edit, Search } from "@mui/icons-material";
+import { Delete, Edit} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import agent from "../../api/agen";
-import { useState } from "react";
+import { useDeleteProductMutation } from "../../redux/slices/productApi";
+import { token } from "../../../Theme";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+
 
 interface Props {
   products: Product[];
 }
-interface SearchState {
-  query: string;
-}
+
 const ProductTable: React.FC<Props> = ({ products }) => {
+  const theme = useTheme();
+  const colors = token(theme.palette.mode);
   const navigate = useNavigate();
-  const deleteProduct = async (id: string) => {
-    try{
-      console.log(id)
-      await agent.Products.delete(id);
-    }catch(err){
-      console.error(err);
-    }
-  }
-  const handleDelete = (id: string) => {
-    deleteProduct(id);
-  }
-  const [searchTerm, setSearchTerm] = useState<SearchState>({ query: ''});
-  
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm({ query: e.target.value})
+  const [deleteProduct] = useDeleteProductMutation();
+
+  const handleDelete = async (productId: string) => {
+    await deleteProduct(productId);
   }
 
-  const filteredProducts = products.filter( product => 
-    product.title.toLowerCase().includes(searchTerm.query.toLowerCase())
-  );
-  return (     
-    <TableContainer  
-    component={Paper}>
-      <TextField
-        sx={{px:3}}
-        placeholder="search"
-        type="text"
-        margin="normal"
-        value={searchTerm.query}
-        onChange={handleSearchChange}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton>
-                <Search />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-        />
-    <Table sx={{ maxHeight: 'calc(100vh - 150px)', overflowY:'auto', boxShadow:2}}>
-      <TableHead>
-        <TableRow>
-          <TableCell>Name</TableCell>
-          <TableCell>Price</TableCell>
-          <TableCell>quantity</TableCell>
-          <TableCell></TableCell>
-          <TableCell></TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody >
-        {filteredProducts.length > 0 
-        && filteredProducts.map(product => (
-          <TableRow  key={product._id}>
-            <TableCell>{product.title}</TableCell>
-            <TableCell>{product.price.toFixed(2)} $</TableCell>
-            <TableCell>{product.quantity}</TableCell>
-            <TableCell sx={{p:0}}>
-              <IconButton onClick={() => navigate(`/updateProduct/${product._id}`)}> 
-                <Edit/>
-              </IconButton>
-            </TableCell>
-            <TableCell sx={{p:0}}>
-              <IconButton onClick={() => handleDelete(product._id)}>
-                <Delete />
-              </IconButton>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-    {filteredProducts.length ==0 && <Typography color={'error'} sx={{p:2,textAlign:'center'}}>Item Not Found</Typography>}
-  </TableContainer>
+  const columns: GridColDef<Product>[] = [
+    { field: 'title', headerName: 'Title', width: 250},
+    { field: 'price', headerName: 'Price', width: 100, type: 'number' }, // Set type for number formatting
+    { field: 'quantity', headerName: 'Quantity', width: 100 },
+    {
+      field: 'edit',
+      headerName: 'Edit',
+      width: 100,
+      renderCell: (_params) => (
+        <IconButton onClick={() => navigate(`/updateProduct/${_params.id}`)}>
+          <Edit /> 
+        </IconButton>
+      ),
+    },
+    {
+      field: 'delete',
+      headerName: 'Delete',
+      width: 100,
+      renderCell: () => (
+        <IconButton onClick={() => handleDelete}>
+          <Delete /> 
+        </IconButton>
+      ),
+    },
+  ];
+  const productsWithId = products.map((product) => ({
+    ...product,
+    id: product._id || product.title, // Use _id if available, otherwise use title
+  }));
+  return (    
+    <Box > 
+    <DataGrid 
+      sx={{
+        width:'fit-content',
+        maxHeight:400,
+        height:'fit-content',
+        "& .MuiDataGrid-root":{
+          border:'none'
+        },
+        "& .MuiDataGrid-cell":{
+          borderBottom:'none'
+        },
+        "& .name-column--cell":{
+          color: colors.greenAccent[300]
+        },
+        "& .MuiDataGrid-filler":{
+          bgcolor:colors.blueAccent[700],
+        },
+
+        "& .MuiDataGrid-columnHeader ":{
+          backgroundColor:colors.blueAccent[700],
+          borderBottom:'none'
+        },
+        "& .MuiDataGrid-virtualScroll": {
+          backgroundColor: colors.primary[400]
+        },
+        "& .MuiDataGrid-footerContainer": {
+          borderTop:'none',
+          height:'fit-content',
+          backgroundColor: colors.blueAccent[700]
+        }
+      }}
+      rows={productsWithId} 
+      columns={columns}         
+      initialState={{
+        pagination:{
+          paginationModel: {
+            pageSize: 6,
+          }
+        },
+      }}
+      pageSizeOptions={[6]}
+      checkboxSelection 
+      disableRowSelectionOnClick/>
+    {products.length ==0 && <Typography color={'error'} sx={{p:2,textAlign:'center'}}>Item Not Found</Typography>}
+  </Box>
   )
 };
 export default ProductTable

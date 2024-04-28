@@ -16,23 +16,19 @@ export const getProducts = asyncHandler(async(req, res) => {
   const limit = req.query.isAdmin === 'true' ? 100000 : 8;
   const skip = (page - 1) * limit;
   
-  const keyword = req.query.keyword
-  ? { title: { $regex: req.query.keyword, $options: "i" } }
+  const searchTerm = req.query.searchTerm
+  ? { title: { $regex: req.query.searchTerm, $options: "i" } }
   : {};
   
-  const totalProducts = await Product.countDocuments(keyword);
+  const totalProducts = await Product.countDocuments(searchTerm);
   const totalPages = Math.ceil(totalProducts / limit);
 
-  const searchTerm = req.query.searchTerm || '';
-  
-  let category = req.query.category || ''
+
   const sort = req.query.sort || 'createdAt';
         
   const order = req.query.order || 'desc';
 
-  const products = await Product.find({
-    title: {$regex: searchTerm, $options: "i"}
-  })
+  const products = await Product.find(searchTerm)
     .sort({ [sort]: order})
     .skip(skip)
     .limit(limit)

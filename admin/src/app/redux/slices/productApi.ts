@@ -5,17 +5,19 @@ import { apiSlice } from "./apiSilce";
 
 interface GetProductsParams {
     isAdmin?: boolean,
-    pageNumber?: number
+    pageNumber?: number,
+    searchTerm?: string
 }
 
 export const productApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getProducts: builder.query<PaginatedProduct, GetProductsParams>({
-            query: ({ pageNumber, isAdmin}: GetProductsParams) => ({
+            query: ({ pageNumber, isAdmin, searchTerm}: GetProductsParams) => ({
                 url: PRODUCTS_URL,
                 params: {
                     pageNumber,
-                    isAdmin
+                    isAdmin,
+                    searchTerm
                 }
             }),
             providesTags: ["Product"],
@@ -29,11 +31,11 @@ export const productApiSlice = apiSlice.injectEndpoints({
             keepUnusedDataFor: 5,
         }),
         createProduct: builder.mutation<Product, Product>({
-            query: () => ({
+            query: (product: Product) => ({
                 url: PRODUCTS_URL,
                 method:"POST",
+                body: product
             }),
-            invalidatesTags: ["Product"]
         }),
         updateProduct: builder.mutation<Product, Product>({
             query: (product: Product) => ({

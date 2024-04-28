@@ -6,3 +6,7 @@ body{
     height: 100vh;
 }
 
+#home{
+  background: linear-gradient(to right, #141b2d, #1f2a40); /* Example gradient */
+  min-height: 100vh;
+}

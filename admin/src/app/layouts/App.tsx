@@ -7,11 +7,14 @@ import {
   ThemeProvider, 
 } from "@mui/material";
 import { ColorModeContext, useMode } from "../../Theme";
+import HomePage from "./HomePage";
 
 function App() {
   const [theme, colorMode] = useMode()
   return (
-    <ColorModeContext.Provider value={colorMode}>
+    <>
+    {location.pathname === "/" ? <HomePage/> : (
+      <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
         <CssBaseline/>
         <Box sx={{ display:{sm: 'flex' }}}> {/* Disable container max-width */}
@@ -22,6 +25,8 @@ function App() {
         </Box>
         </ThemeProvider>
     </ColorModeContext.Provider>
+    )}
+    </>
   )
 }
 

@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { 
     AppBar,
-    Box, 
-    Drawer,  
+    Box,   
     IconButton, 
     List, 
     ListItem, 
@@ -11,8 +10,7 @@ import {
     useTheme, 
     
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu"
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import StoreIcon from '@mui/icons-material/Store';
 import { ColorModeContext, token } from "../../Theme";
@@ -27,21 +25,14 @@ const Sidebar = () => {
     const theme = useTheme();
     const colors = token(theme.palette.mode);
     const colorMode = useContext(ColorModeContext);
-    const [mobileOpen, setMobileOpen] = useState(false);
 
-    const handleClose = () => {
-        setMobileOpen(false);
-    }
-    const handleOpen = () => {
-        setMobileOpen(true);
-    }
     const dataItems: Item[] = [
         {name:'Products', path:'/products', icon: ShoppingCart},
         {name:'Categries', path:'/categories', icon: Category},
     ];
     const content = (
         <Box>
-        <Link to="/">
+        <Link to="/dashboard">
             <Box sx={{display:'flex', gap:1, alignItems:'center', px:8,py:1,mt:2,'&:hover':{bgcolor:colors.greenAccent[500]}, 
                 transition:'all ease .3s', }}>
             <Home/>
@@ -68,7 +59,6 @@ const Sidebar = () => {
         ))}
         </List>
         <List>
-
         </List>
         </Box>
     )
@@ -79,7 +69,7 @@ const Sidebar = () => {
      sx={{  
         width: 230,  
         bgcolor:colors.primary[400],
-        display:{xs:'none',sm:'block'},
+        display:'block',
         minHeight:'100vh'
         }}>
         <Box 
@@ -102,26 +92,6 @@ const Sidebar = () => {
         </Box>
        {content}
     </AppBar>
-
-    <Box>
-        <IconButton onClick={handleOpen} sx={{display:{xs:'block',sm:'none'}}}>
-            <MenuIcon/>
-        </IconButton>
-    <Drawer 
-    variant="temporary"
-    open={mobileOpen}
-    onClose={handleClose}
-    sx={{
-        display:{xs:'block', sm:'none'},
-        '& .MuiDrawer-paper': { width: 220, background: "#333"   },
-    }}
-    >
-    <Typography sx={{ color:'#aeaeae'}} variant="h6">
-        <StoreIcon/>The Spot
-    </Typography>
-      {content}
-    </Drawer>
-    </Box>
     </>
   )
 }

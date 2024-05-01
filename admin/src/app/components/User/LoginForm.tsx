@@ -93,7 +93,7 @@ const LoginForm = () => {
                 value={user.password}
                 onChange={handleChange}
                 />
-              <Button variant="contained" type="submit" sx={{my:1}} disabled={loadingLogin && true} >{loadingLogin ? <Loader /> : 'Submit'}</Button>
+              <Button variant="contained" type="submit" sx={{my:1, bgcolor:colors.greenAccent[500], "&:hover":{bgcolor:colors.greenAccent[400]}}} disabled={loadingLogin && true} >{loadingLogin ? <Loader /> : 'Submit'}</Button>
             </FormGroup>
             <Typography sx={{color:colors.grey[500]}}>
               Don't have an account?

@@ -3,9 +3,14 @@ import asyncHandler from "../middleware/async-handler.js";
 import Category from "../model/category.js";
 
 export const getCategories = asyncHandler(async(req, res) => {
-    const categories = await Category.find().populate('parent');
+    const pageSize = 8;
+    const page = Number(req.query.page) || 1;
+    const count = await Category.countDocuments();
+    const categories = await Category.find().populate('parent')
+        .limit(pageSize)
+        .skip(pageSize * (page - 1));
     
-    res.status(StatusCodes.OK).json( categories );
+    res.status(StatusCodes.OK).json({ categories, page, pages:Math.ceil( count / pageSize) });
 });
 
 export const createCategory = asyncHandler(async(req, res) => {

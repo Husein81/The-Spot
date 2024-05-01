@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { Box, Button, Container, FormControl, FormGroup, FormLabel, IconButton, Link, TextField, Typography, useTheme } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { User } from "../../models/User";
 import { token } from "../../../Theme";
 import { useRegisterMutation } from "../../redux/slices/userApi";
@@ -10,6 +10,7 @@ import { app } from "../../../firebase";
 import { Upload } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../../redux/slices/authSlice";
+import Loader from "../Loader";
 
 const RegisterForm: React.FC = () => {
   const theme = useTheme();
@@ -28,13 +29,16 @@ const RegisterForm: React.FC = () => {
     avatar:''
   });
 
-  const [register] = useRegisterMutation();
+  const [register, {isLoading : loadinbRegister}] = useRegisterMutation();
 
   const { userInfo } = useSelector((state: any) => state.auth);
+  const { search } = useLocation();
+  const sp = new URLSearchParams(search);
+  const redirect = sp.get("redirect") || "/dashboard";
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/dashboard");
+      navigate(redirect);
     }
   }, [userInfo, navigate]);
 
@@ -110,10 +114,9 @@ const RegisterForm: React.FC = () => {
     e.preventDefault();
     try {
       const res = await register(user).unwrap();
-      console.log(res)
       setError(null);
       dispatch(setCredentials(res));
-      navigate("/dashboard");
+      navigate(redirect);
     } catch(error) {
       console.log(error);
     }
@@ -190,7 +193,7 @@ const RegisterForm: React.FC = () => {
               value={user.password}
               onChange={handleChange}
             />
-            <Button variant="contained" type="submit">Submit</Button>
+            <Button variant="contained" disabled={loadinbRegister && true } sx={{my:1, bgcolor:colors.greenAccent[500], "&:hover":{bgcolor:colors.greenAccent[400]}}} type="submit">{loadinbRegister ? <Loader/>: 'Submit'}</Button>
           </FormGroup>
           <Typography sx={{ color: colors.grey[500] }}>
             Don't have an account?

@@ -7,7 +7,8 @@ import {
   FormLabel,  
   IconButton,  
   TextField, 
-  Typography, 
+  Typography,
+  useTheme, 
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Product } from "../../models/Product";
@@ -22,9 +23,13 @@ import { app } from "../../../firebase";
 import { Upload } from "@mui/icons-material";
 import Loader from "../Loader";
 import { v4 as uuid} from 'uuid';
+import { token } from "../../../Theme";
 
 const ProductForm = () => {
     const { id: productId  } = useParams();
+
+    const theme = useTheme();
+    const colors = token(theme.palette.mode);
 
     const navigate = useNavigate();
     const [images, setImages] = useState<FileList | null>(null);
@@ -74,6 +79,7 @@ const ProductForm = () => {
         )
       });
     };
+
     const handleImageSubmit = () => {
       const newImage = images as FileList
       if(newImage.length > 0 && newImage.length + product.imageUrls.length < 7){
@@ -169,8 +175,8 @@ const ProductForm = () => {
                   className="w-20 h-20 object-contain rounded-lg"
                 />
                 <Button
-                  sx={{'&:hover':{bgcolor:'transparent'}}}
-                  onClick={() => handleRemoveImage(url, i)}>
+                  sx={{'&:hover':{bgcolor:'transparent'}, color:colors.greenAccent[500]}}
+                  onClick={() => handleRemoveImage(url, i)} >
                   Delete
                 </Button>
               </Box>
@@ -204,8 +210,8 @@ const ProductForm = () => {
                 />
             </FormGroup>
             <Box display={'flex'} justifyContent={'space-between'} py={2} >
-                <Button variant="contained" color="secondary" type="submit" >{loadingCreate || loadingUpdate ? <Loader color="#fff"  /> : 'Submit'}</Button>
-                <Button variant="outlined" color="secondary"onClick={() => navigate('/products')}>Cancel</Button>
+                <Button variant="contained" sx={{bgcolor:colors.greenAccent[500], color:'white', "&:hover":{bgcolor:colors.greenAccent[300]}}} type="submit" >{loadingCreate || loadingUpdate ? <Loader color="#fff"  /> : 'Submit'}</Button>
+                <Button variant="outlined" sx={{borderColor:colors.greenAccent[500], color:colors.greenAccent[500], "&:hover":{borderColor:colors.greenAccent[300]}}} onClick={() => navigate('/products')}>Cancel</Button>
             </Box>
         </FormControl>
     </Container>

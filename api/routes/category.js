@@ -6,6 +6,6 @@ const router  = express.Router();
 
 router.get('/', getCategories);
 router.post('/',isAuthenticatedUser, authorizedRoles, createCategory);
-router.put('/', isAuthenticatedUser, authorizedRoles, updateCategory);
-router.delete('/', isAuthenticatedUser, authorizedRoles, deleteCategory);
+router.put('/:id', isAuthenticatedUser, authorizedRoles, updateCategory);
+router.delete('/:id', isAuthenticatedUser, authorizedRoles, deleteCategory);
 export default router;

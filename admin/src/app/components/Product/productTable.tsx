@@ -27,13 +27,13 @@ const ProductTable: React.FC<Props> = ({ products }) => {
   }
 
   const columns: GridColDef<Product>[] = [
-    { field: 'title', headerName: 'Title', width: 250},
-    { field: 'price', headerName: 'Price', width: 100, type: 'number' }, // Set type for number formatting
-    { field: 'quantity', headerName: 'Quantity', width: 100 },
+    { field: 'title', headerName: 'Title', width: 150},
+    { field: 'price', headerName: 'Price', width: 150, type: 'number' }, // Set type for number formatting
+    { field: 'quantity', headerName: 'Quantity', width: 150 },
     {
       field: 'edit',
       headerName: 'Edit',
-      width: 100,
+      width: 150,
       renderCell: (_params) => (
         <IconButton onClick={() => navigate(`/updateProduct/${_params.id}`)}>
           <Edit /> 

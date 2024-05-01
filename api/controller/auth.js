@@ -6,14 +6,14 @@ import generateToken from "../utils/generateToken.js";
 import bcrypt from "bcryptjs";
 
 
-export const signup = asyncHandler(async(req, res) => {
-    const { username, email, password } = req.body;
+export const register = asyncHandler(async(req, res) => {
+    const { username, email, password, avatar } = req.body;
     const userExists = await User.findOne({ $or: [{ username }, { email }] });
     if(userExists){
         throw new BadRequestError("user already exists");
     }
     
-    const user = await User.create({ username, email, password});
+    const user = await User.create({ username, email, password, avatar});
     if(!user){
         throw new BadRequestError("Invalid Data")
     }
@@ -23,11 +23,12 @@ export const signup = asyncHandler(async(req, res) => {
         _id: user._id,
         username: user.username,
         email: user.email,
+        avatar: user.avatar,
         isAdmin: user.isAdmin
      });
 });
 
-export const signin = asyncHandler(async(req, res) => {
+export const login = asyncHandler(async(req, res) => {
     const { username, password } = req.body;
     try{
         const user = await User.findOne({ username });
@@ -39,20 +40,25 @@ export const signin = asyncHandler(async(req, res) => {
             throw new UnauthenticatedError("Invalid Credentials!");
         }
         generateToken(res, user._id);
-        
-        const { password:pass, ...rest} = user._doc;
-        res.status(StatusCodes.OK).json({ rest });
+        res.status(StatusCodes.OK).json({
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+            avatar:user.avatar,
+            isAdmin: user.isAdmin,
+        });
     }catch (error) {
         console.log(error)
     }
 
 });
 
-export const signout = asyncHandler(async(req, res, next) => {
+export const logout = asyncHandler(async(req, res) => {
     try{
         res.clearCookie('jwt');
-        res.status(StatusCodes.OK).json("User has been logged out!");
+        res.status(StatusCodes.OK).json({success: true,
+        message: "Logout successful"});
     }catch (error){
-        next(error);
+        console.log(error);
     }
 })

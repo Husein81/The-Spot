@@ -52,7 +52,7 @@ export const updateUser = asyncHandler(async (req, res) => {
     username: updatedUser.username,
     email: updatedUser.email,
     isAdmin: updatedUser.isAdmin,
-    avatar: updateUser.avatar
+    avatar: updatedUser.avatar
   })
 });
 
@@ -97,6 +97,7 @@ export const updateUserProfile = asyncHandler(async(req, res) => {
     _id: updatedUser._id,
     username: updatedUser.username,
     email: updatedUser.email,
+    avatar: updatedUser.avatar,
     isAdmin: updatedUser.isAdmin
   });
 

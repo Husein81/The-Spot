@@ -10,25 +10,54 @@ import {
     useTheme, 
     
 } from "@mui/material";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import StoreIcon from '@mui/icons-material/Store';
 import { ColorModeContext, token } from "../../Theme";
-import { Category, DarkModeOutlined, Home, LightModeOutlined, ShoppingCart } from "@mui/icons-material";
+import { 
+    AccountCircle, 
+    AddShoppingCart, 
+    Category, 
+    DarkModeOutlined, 
+    Home, 
+    LightModeOutlined, 
+    Logout, 
+    ShoppingCart 
+} from "@mui/icons-material";
+import { useLogoutApiCallMutation } from "../redux/slices/userApi";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../redux/slices/authSlice";
 interface Item{
     name: string,
-    path: string,
-    icon?: React.ComponentType<any>
+    path?: string,
+    icon?: React.ComponentType<any>,
+    onClick?: () => void
 }
 
 const Sidebar = () => {
     const theme = useTheme();
     const colors = token(theme.palette.mode);
     const colorMode = useContext(ColorModeContext);
+    const dispatch = useDispatch();
+    const { userInfo} = useSelector((state: any) => state.auth);
 
+    const [logoutApiCall] = useLogoutApiCallMutation();
+
+    const handleLogout = async () =>{
+        
+        try{
+            await logoutApiCall().unwrap();
+            dispatch(logout());
+            navigate("/login")
+        }catch(error){
+            console.log(error);
+        }
+    }
     const dataItems: Item[] = [
-        {name:'Products', path:'/products', icon: ShoppingCart},
+        {name:'Products', path:'/products', icon: AddShoppingCart},
         {name:'Categries', path:'/categories', icon: Category},
+        {name:'Orders', path:'/orders', icon: ShoppingCart},
+        {name:'Profile',path:'/profile', icon: AccountCircle},
     ];
     const content = (
         <Box>
@@ -43,23 +72,33 @@ const Sidebar = () => {
         sx={{py:2, textAlign:'center'}}
         >
             <Typography variant="h6" sx={{color:colors.grey[400]}}>Data</Typography>
-        {dataItems.map((item) => (
-            <ListItem  button key={item.name}
-            sx={{
-                '&:hover':{bgcolor:colors.greenAccent[500]}, 
-                transition:'all ease .3s', 
-                py:1,
-                px:8,
-                textAlign:'center'
-            }} 
-            onClick={() => navigate(item.path)}>
-                {item.icon ? (<item.icon/>) : ''}
-                <ListItemText sx={{fontscolor:{xs:'#aeaeae',sm:'#eee'}}} primary={item.name}/>
-            </ListItem>
-        ))}
+            {dataItems.map((item) => (
+                <ListItem  button key={item.name}
+                sx={{
+                    '&:hover':{bgcolor:colors.greenAccent[500]}, 
+                    transition:'all ease .3s', 
+                    py:1,
+                    px:8,
+                    textAlign:'center'
+                }} 
+                onClick={() => navigate(item.path || '')}>
+                    {item.icon ? (<item.icon/>) : ''}
+                    <ListItemText sx={{fontscolor:{xs:'#aeaeae',sm:'#eee'}}} primary={item.name}/>
+                </ListItem>
+            ))}
+                <ListItem button  
+                    sx={{
+                        '&:hover':{bgcolor:colors.greenAccent[500]}, 
+                        transition:'all ease .3s', 
+                        py:1,
+                        px:8,
+                        textAlign:'center'
+                    }}  onClick={handleLogout}>
+                    <Logout/>
+                    <ListItemText sx={{fontscolor:{xs:'#aeaeae',sm:'#eee'}}} primary={'Logout'}/>
+                </ListItem>
         </List>
-        <List>
-        </List>
+        
         </Box>
     )
     const navigate = useNavigate();
@@ -89,6 +128,10 @@ const Sidebar = () => {
                 <LightModeOutlined htmlColor="white"/>
             )}
         </IconButton>
+        </Box>
+        <Box display={'flex'} flexDirection={'column'} alignItems={'center'} pt={1} gap={1}>
+            <img src={userInfo.avatar} style={{borderRadius:50, width:54, height:54 ,cursor:'pointer'}} />
+            <Typography variant="h5">{userInfo.username}</Typography>
         </Box>
        {content}
     </AppBar>

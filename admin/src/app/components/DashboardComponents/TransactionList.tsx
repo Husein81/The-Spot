@@ -26,10 +26,10 @@ const TransactionList = () => {
         <Typography variant="h6">Recent Transactions</Typography>
         <List sx={{ maxHeight: 190, overflowY: 'scroll' }}>
         {items.map((item) => (
-            <ListItem key={item.id} sx={{display:'flex',bgcolor: colors.primary[500],my:1, justifyContent:'space-between'}}>
+            <ListItem key={item.id} sx={{display:'flex',color:colors.grey[400],bgcolor: colors.primary[500],my:1, justifyContent:'space-between'}}>
                 <ListItemText primary={item.name} />
                 <ListItemText primary={item.date} />
-                <Button disabled variant="contained" sx={{bgcolor:colors.greenAccent[400]}}>{item.price}</Button>
+                <Button  variant="contained" sx={{bgcolor:colors.greenAccent[400]}}>{item.price}</Button>
             </ListItem>
         ))}
         </List>

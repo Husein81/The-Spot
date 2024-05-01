@@ -1,7 +1,15 @@
 import { Box } from "@mui/material"
 import { PieChart } from "@mui/x-charts"
+import React from "react";
 
-const PieChartComponent = () => {
+interface Progress{
+  label:string,
+  value:number
+}
+interface Props{
+  progress: Progress[];
+}
+const PieChartComponent: React.FC<Props> = ({ progress }) => {
   return (
     <Box>
         <PieChart
@@ -10,12 +18,7 @@ const PieChartComponent = () => {
             series={[
                 {
                     id:"s1",
-                    data: [
-                        { label: 'A1', value: 100 },
-                        { label: 'A2', value: 300 },
-                        { label: 'B1', value: 100 },
-                        { label: 'B2', value: 100 },
-                        { label: 'B3', value: 40 }, ],
+                    data: progress,
                     innerRadius: 20,
                     outerRadius: 30 , 
                 }

@@ -60,7 +60,6 @@ const ProductTable: React.FC<Props> = ({ products }) => {
     <DataGrid 
       sx={{
         width:'fit-content',
-        maxHeight:400,
         height:'fit-content',
         "& .MuiDataGrid-root":{
           border:'none'

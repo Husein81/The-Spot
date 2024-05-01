@@ -8,13 +8,13 @@ import {
   Typography, 
   useTheme
 } from "@mui/material";
-import Loader from "../components/Loader";
+import Loader from "../Loader";
 import { useNavigate } from "react-router-dom";
-import { useGetProductsQuery } from "../redux/slices/productApi";
-import ProductTable from "../components/ProductComponents/productTable";
+import { useGetProductsQuery } from "../../redux/slices/productApi";
+import ProductTable from "./productTable";
 import { useState } from "react";
 import { Search } from "@mui/icons-material";
-import { token } from "../../Theme";
+import { token } from "../../../Theme";
 
 
 

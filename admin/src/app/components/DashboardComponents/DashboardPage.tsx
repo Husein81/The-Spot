@@ -7,7 +7,7 @@ import { token } from "../../../Theme.ts";
 import TransactionList from "./TransactionList.tsx";
 import { AddShoppingCart, CurrencyExchange, People, ShoppingCart } from "@mui/icons-material";
 import { useGetProductsQuery } from "../../redux/slices/productApi.ts";
-import { useSelector } from "react-redux";
+import { useGetUsersQuery } from "../../redux/slices/userApi.ts";
 
 interface Progress {
   label: string;
@@ -25,11 +25,22 @@ const DashboardPage = () => {
   const theme = useTheme();
   const colors = token(theme.palette.mode);
   const { data } = useGetProductsQuery({ isAdmin: true });
-  const { userInfo} = useSelector((state: any) => state.auth);
-  console.log(userInfo)
+  const { data: users } = useGetUsersQuery(1);
+
   const products = (data?.products.length || 0) * 10;
   const B = 100 - products;
+
+  const user = (users?.users.length || 0)*10;
+
+  const userData: Progress[] = [
+    { label: "A", value: user },
+    { label: "B", value: 100 - user},
+  ];
   const progressData: Progress[] = [
+    { label: "A", value: products },
+    { label: "B", value: B },
+  ];
+  const productData: Progress[] = [
     { label: "A", value: products },
     { label: "B", value: B },
   ];
@@ -43,16 +54,16 @@ const DashboardPage = () => {
       progress: progressData,
     },
     {
-      title: "150",
+      title: products.toString(),
       subTitle: "Products",
       icon: AddShoppingCart,
-      progress: progressData,
+      progress: productData,
     },
     {
-      title: "6",
+      title: users?.users.length.toString() || "0",
       subTitle: "Sellers",
       icon: People,
-      progress: progressData,
+      progress: userData,
     },
     {
       title: "12",

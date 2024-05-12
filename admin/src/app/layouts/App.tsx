@@ -11,18 +11,22 @@ import HomePage from "./HomePage";
 import LoginForm from "../components/User/LoginForm";
 import RegisterForm from "../components/User/RegisterForm";
 
+
 function App() {
   const [theme, colorMode] = useMode();
   const location = useLocation();
+ 
+
   if (location.pathname === '/') {
     return <HomePage />;
   } else if (location.pathname === '/login') {
     return <LoginForm />;
   } else if (location.pathname === '/register') {
     return <RegisterForm />;
-  } else {
-    return (
-      <>
+  } 
+
+   return (
+     <>
         <ColorModeContext.Provider value={colorMode}>
           <ThemeProvider theme={theme}>
           <CssBaseline/>
@@ -36,7 +40,5 @@ function App() {
       </ColorModeContext.Provider>
       </>
     )
-  }
-}
-
+}  
 export default App;

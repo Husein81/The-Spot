@@ -36,7 +36,7 @@ const ProductPage = () => {
   return (
     <Container >
       {isLoading ? (
-       <Loader/>
+       <Loader color="white"/>
         ) : 
          (
           <Grid container spacing={2}>

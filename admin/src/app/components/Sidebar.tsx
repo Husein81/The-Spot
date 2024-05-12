@@ -10,10 +10,6 @@ import {
     useTheme, 
     
 } from "@mui/material";
-import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import StoreIcon from '@mui/icons-material/Store';
-import { ColorModeContext, token } from "../../Theme";
 import { 
     AccountCircle, 
     AddShoppingCart, 
@@ -24,6 +20,10 @@ import {
     Logout, 
     ShoppingCart 
 } from "@mui/icons-material";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import StoreIcon from '@mui/icons-material/Store';
+import { ColorModeContext, token } from "../../Theme";
 import { useLogoutApiCallMutation } from "../redux/slices/userApi";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/slices/authSlice";
@@ -109,7 +109,8 @@ const Sidebar = () => {
         width: 230,  
         bgcolor:colors.primary[400],
         display:'block',
-        minHeight:'100vh'
+        minHeight:'100vh',
+        height:'100%',
         }}>
         <Box 
         display={'flex'} 

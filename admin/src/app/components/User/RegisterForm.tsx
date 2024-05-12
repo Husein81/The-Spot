@@ -7,6 +7,7 @@ import { token } from "../../../Theme";
 import { useRegisterMutation } from "../../redux/slices/userApi";
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { app } from "../../../firebase";
+import {v4 as uuid} from 'uuid';
 import { Upload } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../../redux/slices/authSlice";
@@ -23,6 +24,7 @@ const RegisterForm: React.FC = () => {
   const [loadingUpload, setLoadingUpload] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<User>({
+    _id:'',
     username:'',
     password:'',
     email:'',
@@ -40,7 +42,7 @@ const RegisterForm: React.FC = () => {
     if (userInfo) {
       navigate(redirect);
     }
-  }, [userInfo, navigate]);
+  }, [userInfo, navigate, redirect]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -113,6 +115,7 @@ const RegisterForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      user._id = uuid();
       const res = await register(user).unwrap();
       setError(null);
       dispatch(setCredentials(res));
@@ -124,7 +127,8 @@ const RegisterForm: React.FC = () => {
 
   return (
     <Box bgcolor={colors.primary[500]} minHeight={'100vh'}>
-      <Container component={'form'} onSubmit={handleSubmit} autoComplete="off" sx={{ width: 680, py: 5 , display: 'flex', gap: 1 }}>
+      <Container component={'form'} onSubmit={handleSubmit} 
+      autoComplete="off" sx={{ width: 680, py: 5 , display: 'flex', gap: 1 }}>
         <FormControl component={'fieldset'} fullWidth>
           <FormLabel component={'legend'}>
             <Typography variant="h2" sx={{ color: colors.grey[500] }}>
@@ -133,7 +137,12 @@ const RegisterForm: React.FC = () => {
           </FormLabel>
           <FormGroup>
             <Box display={'flex'} gap={2} sx={{ py: 1 }}>
-              <IconButton component="label" sx={{ display: 'inline-block', border: 1, borderRadius: 1, borderColor: '#aeaeae' }}>
+              <IconButton component="label" sx={{ 
+                display: 'inline-block', 
+                border: 1, 
+                borderRadius: 1, 
+                borderColor: '#aeaeae' 
+                }}>
                 <input 
                   type="file" 
                   accept="image/*" 

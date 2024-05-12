@@ -12,5 +12,5 @@ export const store = configureStore({
     devTools:true,
 });
 
-export type RooteState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof store.getState>;
 export type AddDispatch = typeof store.dispatch;

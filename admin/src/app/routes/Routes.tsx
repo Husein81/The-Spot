@@ -8,6 +8,7 @@ import HomePage from "../layouts/HomePage";
 import LoginForm from "../components/User/LoginForm";
 import RegisterForm from "../components/User/RegisterForm";
 import CategoryForm from "../components/CategoryComponents/CategoryForm";
+import ProfilePage from "../components/User/ProfilePage";
 
 export const routes: RouteObject[] = [
     {
@@ -23,7 +24,8 @@ export const routes: RouteObject[] = [
             {path:'createCategory', element:<CategoryForm key={'create'}/>},
             {path:'updateCategory/:id', element:<CategoryForm key={'update'}/>},
             {path:'login', element:<LoginForm />},
-            {path:'register', element:<RegisterForm/>}
+            {path:'register', element:<RegisterForm/>},
+            {path:'/profile', element:<ProfilePage/>},
         ]
     }
 ];

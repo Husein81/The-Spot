@@ -1,12 +1,19 @@
 import { Category } from "../../models/Category";
+import { PagenatedCategory } from "../../models/PagenatedModels/PagenatedCategory";
 import { CATEGORY_URL } from "../URLs";
 import { apiSlice } from "./apiSilce";
 
+export interface CategoryParam{
+    pageNumber?:number
+}
 export const categoryApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getCategories: builder.query({
-            query: () => ({
-                url: CATEGORY_URL
+        getCategories: builder.query<PagenatedCategory, CategoryParam>({
+            query: ( pageNumber: CategoryParam) => ({
+                url: CATEGORY_URL,
+                params:{
+                    pageNumber:pageNumber,
+                }
             }),
             providesTags: ["Category"],
             keepUnusedDataFor: 5,

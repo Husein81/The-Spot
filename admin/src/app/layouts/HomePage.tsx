@@ -1,27 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box, Button, Typography, useTheme } from "@mui/material"
-import { token } from "../../Theme";
+import { Box, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
-    const theme = useTheme();
-    const colors = token(theme.palette.mode);
-    const navigate = useNavigate();
+
     const { userInfo} = useSelector((state: any) => state.auth);
-    console.log(userInfo)
-    const handleNavigation = () => {
-      if(userInfo){
-        navigate("/dashboard");
-      }
-      navigate('/login')
-    }
-  return (
-    <Box className="home" sx={{display:'flex',flexDirection:'column',justifyContent:'center',color:'white', alignItems:'center'}} >
-        <Typography variant="h4">The Spot</Typography>
-        <Typography variant="h5">Welcome To My Dashboard</Typography>
-        <Button variant="outlined"onClick={handleNavigation} sx={{borderColor:colors.grey[900],color:colors.grey[900]}} >Login</Button>
-    </Box>
-  )
+    return (
+      <Box className="home" sx={{display:'flex',flexDirection:'column',justifyContent:'center',color:'white', alignItems:'center'}} >
+          <Typography variant="h4">The Spot</Typography>
+          <Typography variant="h5">Welcome To My Dashboard</Typography>
+          <Box sx={{border:1, borderRadius:1, px:2, py:1,m:1}}>
+            <Link to={userInfo ?"/dashboard":"/login"}>Login</Link>
+          </Box>
+      </Box>
+    )
 }
 export default HomePage

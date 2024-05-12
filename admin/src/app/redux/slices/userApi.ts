@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { PagenatedUser } from "../../models/PagenatedModels/PagenatedUser";
 import { User } from "../../models/User";
 import { AUTH_URL, USER_URL } from "../URLs";
 import { apiSlice } from "./apiSilce";
@@ -30,7 +31,7 @@ export const userApi = apiSlice.injectEndpoints({
                 method:"POST",
             })
         }),
-        getUsers: builder.query<User[], number>({
+        getUsers: builder.query<PagenatedUser, number>({
             query: (pageNumber: number ) => ({
                 url: USER_URL,
                 params: {
@@ -47,6 +48,19 @@ export const userApi = apiSlice.injectEndpoints({
             providesTags: ["User"],
             keepUnusedDataFor: 5,
         }),
+        updateUser: builder.mutation<User, User>({
+            query: (user: User) => ({
+                url: `${USER_URL}/${user._id}`,
+                method: "PUT",
+                body: user
+            })
+        }),
+        deleteUser: builder.mutation<User, string>({
+            query: (id: string) => ({
+                url: `${USER_URL}/${id}`,
+                method: "DELETE"
+            })
+        })
         
     })
 });

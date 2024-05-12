@@ -1,4 +1,7 @@
 {
+  "dependencies": {
+    "d3-shape": "^3.5.0"
+  },
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,

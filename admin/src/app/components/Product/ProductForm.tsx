@@ -132,7 +132,7 @@ const ProductForm = () => {
         }
     }
     
-    if(isLoading) return <Loader />;
+    if(isLoading) return <Loader color="white" />;
 
   return (
     <Container component={'form'} onSubmit={handleSubmit} autoComplete="off" sx={{width:880, mb:3,display:'flex',}}>

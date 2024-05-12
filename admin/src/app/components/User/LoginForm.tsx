@@ -2,7 +2,6 @@
 import { Box, Button, Container, FormControl, FormGroup, FormLabel, TextField, Typography, useTheme } from "@mui/material"
 import { token } from "../../../Theme";
 import React, { useEffect, useState } from "react";
-
 import { User } from "../../models/User";
 import { useLoginMutation} from "../../redux/slices/userApi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -29,6 +28,7 @@ const LoginForm = () => {
     }, [userInfo, redirect, navigate]);
   
     const [user, setUser] = useState<User>({
+      _id:'',
       username:'',
       password:'',
     });

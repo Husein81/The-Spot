@@ -1,4 +1,4 @@
-import { PaginatedProduct } from "../../models/pagentatedProducts";
+import { PaginatedProduct } from "../../models/PagenatedModels/PagenatedProducts";
 import { Product } from "../../models/Product";
 import { PRODUCTS_URL } from "../URLs";
 import { apiSlice } from "./apiSilce";

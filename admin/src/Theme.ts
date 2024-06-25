@@ -212,6 +212,7 @@ export const themeSettings: ThemeSettingsFunction = (mode) => {
 export const ColorModeContext = createContext({
     toggleColorMode: () => {}
 });
+
 export const useMode = () => {
     const [mode, setMode] = useState<PaletteMode>("dark");
 

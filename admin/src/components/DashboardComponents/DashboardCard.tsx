@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Typography, useTheme } from "@mui/material";
-import { token } from "../../../Theme";
+import { token } from "../../Theme";
 import PieChartComponent from "./Charts/PieChartComponent";
 
 import React from "react";

@@ -1,14 +1,14 @@
 import { createBrowserRouter, RouteObject } from "react-router-dom";
 import App from "../layouts/App";
-import ProductPage from "../components/Product/ProductPage";
-import CategoryPage from "../components/CategoryComponents/CategoryPage";
-import ProductForm from "../components/Product/ProductForm";
-import DashboardPage from "../components/DashboardComponents/DashboardPage";
+import ProductPage from "../../components/ProductComponents/ProductPage";
+import CategoryPage from "../../components/CategoryComponents/CategoryPage";
+import ProductForm from "../../components/ProductComponents/ProductForm";
+import DashboardPage from "../../components/DashboardComponents/DashboardPage";
 import HomePage from "../layouts/HomePage";
-import LoginForm from "../components/User/LoginForm";
-import RegisterForm from "../components/User/RegisterForm";
-import CategoryForm from "../components/CategoryComponents/CategoryForm";
-import ProfilePage from "../components/User/ProfilePage";
+import LoginForm from "../../components/User/LoginForm";
+import RegisterForm from "../../components/User/RegisterForm";
+import CategoryForm from "../../components/CategoryComponents/CategoryForm";
+import ProfilePage from "../../components/User/ProfilePage";
 
 export const routes: RouteObject[] = [
     {

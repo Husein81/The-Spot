@@ -3,11 +3,11 @@ import { Box, Container, Grid, Typography, useTheme } from "@mui/material";
 import TopBar from "../TopBar.tsx";
 import DashboardCard from "./DashboardCard.tsx";
 import LineChart from "./Charts/LineChart.tsx";
-import { token } from "../../../Theme.ts";
+import { token } from "../../Theme.ts";
 import TransactionList from "./TransactionList.tsx";
 import { AddShoppingCart, CurrencyExchange, People, ShoppingCart } from "@mui/icons-material";
-import { useGetProductsQuery } from "../../redux/slices/productApi.ts";
-import { useGetUsersQuery } from "../../redux/slices/userApi.ts";
+import { useGetProductsQuery } from "../../app/redux/slices/productApi.ts";
+import { useGetUsersQuery } from "../../app/redux/slices/userApi.ts";
 
 interface Progress {
   label: string;
@@ -27,8 +27,8 @@ const DashboardPage = () => {
   const { data } = useGetProductsQuery({ isAdmin: true });
   const { data: users } = useGetUsersQuery(1);
 
-  const products = (data?.products.length || 0) * 10;
-  const B = 100 - products;
+  const products = (data?.products.length || 0) ;
+  const B = 10 - products;
 
   const user = (users?.users.length || 0)*10;
 
@@ -47,7 +47,6 @@ const DashboardPage = () => {
 
   const dataItems: Item[] = [
     {
-
       title: "3200$",
       subTitle: "Total Sale ",
       icon: CurrencyExchange,
@@ -76,7 +75,7 @@ const DashboardPage = () => {
   return (
     <Container>
       <TopBar />
-      <Grid container spacing={2}>
+      <Grid container spacing={2} className='flex '>
         <Grid item xs={12}>
           <Typography pt={2} variant="h3" textTransform={"uppercase"}>
             Dashboard

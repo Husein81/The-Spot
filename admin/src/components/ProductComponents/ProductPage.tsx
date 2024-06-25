@@ -10,11 +10,11 @@ import {
 } from "@mui/material";
 import Loader from "../Loader";
 import { useNavigate } from "react-router-dom";
-import { useGetProductsQuery } from "../../redux/slices/productApi";
+import { useGetProductsQuery } from "../../app/redux/slices/productApi";
 import ProductTable from "./productTable";
 import { useState } from "react";
 import { Search } from "@mui/icons-material";
-import { token } from "../../../Theme";
+import { token } from "../../Theme";
 
 
 
@@ -34,7 +34,7 @@ const ProductPage = () => {
   const products = data?.products || [];
 
   return (
-    <Container >
+    <Container maxWidth='md'>
       {isLoading ? (
        <Loader color="white"/>
         ) : 
@@ -61,11 +61,11 @@ const ProductPage = () => {
               </Box>
               <Typography variant="h2"  py={2} sx={{textTransform:'uppercase'}}>Products</Typography>
               <Button
-              variant="contained"
-              sx={{bgcolor:colors.greenAccent[400], '&:hover':{bgcolor:colors.greenAccent[700]}}}
-              onClick={() => navigate("/createProduct")}
-              >
-                Create Product
+                fullWidth
+                variant="contained"
+                sx={{bgcolor:colors.greenAccent[400],py:'10px', '&:hover':{bgcolor:colors.greenAccent[700]}}}
+                onClick={() => navigate("/createProduct")}>
+                  Create Product
               </Button>
             </Grid>
             <Grid item xs={12} >

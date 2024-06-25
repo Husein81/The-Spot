@@ -70,5 +70,6 @@ export const {
     useRegisterMutation,
     useLogoutApiCallMutation,
     useGetUsersQuery,
-    useGetUserQuery
+    useGetUserQuery,
+    useDeleteUserMutation
 } = userApi;

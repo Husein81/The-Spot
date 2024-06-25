@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AppBar, Box, IconButton, InputBase, Toolbar, useTheme } from "@mui/material"
-import { ColorModeContext, token } from "../../Theme";
+import { ColorModeContext, token } from "../Theme";
 import { DarkModeOutlined, LightModeOutlined, NotificationsActiveOutlined, Search } from "@mui/icons-material";
 import { useContext, useState } from "react";
 import { useSelector } from "react-redux";

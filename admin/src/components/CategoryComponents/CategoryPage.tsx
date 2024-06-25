@@ -1,10 +1,10 @@
 import { Button, Container, Grid, Typography, useTheme } from "@mui/material"
-import { useGetCategoriesQuery } from "../../redux/slices/categoryApi"
+import { useGetCategoriesQuery } from "../../app/redux/slices/categoryApi"
 import Loader from "../Loader";
 import CategortyTable from "./CategortyTable";
 import { useNavigate } from "react-router-dom";
 
-import { token } from "../../../Theme";
+import { token } from "../../Theme";
 
 const CategoryPage = () => {
   const navigate = useNavigate();
@@ -12,9 +12,10 @@ const CategoryPage = () => {
   const colors = token(theme.palette.mode);
   const {data, isLoading} = useGetCategoriesQuery({});
 
-  console.log(data)
+  const categories = data?.categories || [];
+  console.log(categories)
   return (
-    <Container>
+    <Container maxWidth="md">
       {isLoading ? 
       <Loader/> : 
         <Grid container spacing={2}>
@@ -29,7 +30,7 @@ const CategoryPage = () => {
               }>Create Category</Button>
           </Grid>
           <Grid item xs={12}>
-            <CategortyTable categories={data?.categories}/>
+            <CategortyTable categories={categories}/>
           </Grid>
         </Grid>
       }

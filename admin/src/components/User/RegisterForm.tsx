@@ -2,15 +2,15 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button, Container, FormControl, FormGroup, FormLabel, IconButton, Link, TextField, Typography, useTheme } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import { User } from "../../models/User";
-import { token } from "../../../Theme";
-import { useRegisterMutation } from "../../redux/slices/userApi";
+import { User } from "../../app/models/User";
+import { token } from "../../Theme";
+import { useRegisterMutation } from "../../app/redux/slices/userApi";
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
-import { app } from "../../../firebase";
+import { app } from "../../firebase";
 import {v4 as uuid} from 'uuid';
 import { Upload } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { setCredentials } from "../../redux/slices/authSlice";
+import { setCredentials } from "../../app/redux/slices/authSlice";
 import Loader from "../Loader";
 
 const RegisterForm: React.FC = () => {

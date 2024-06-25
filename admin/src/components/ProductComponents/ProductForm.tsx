@@ -11,19 +11,19 @@ import {
   useTheme, 
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Product } from "../../models/Product";
+import { Product } from "../../app/models/Product";
 import { useNavigate, useParams } from "react-router-dom";
 import { 
   useCreateProductMutation, 
   useGetProductQuery, 
   useUpdateProductMutation 
-} from "../../redux/slices/productApi";
+} from "../../app/redux/slices/productApi";
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
-import { app } from "../../../firebase";
+import { app } from "../../firebase";
 import { Upload } from "@mui/icons-material";
 import Loader from "../Loader";
 import { v4 as uuid} from 'uuid';
-import { token } from "../../../Theme";
+import { token } from "../../Theme";
 
 const ProductForm = () => {
     const { id: productId  } = useParams();
@@ -135,7 +135,7 @@ const ProductForm = () => {
     if(isLoading) return <Loader color="white" />;
 
   return (
-    <Container component={'form'} onSubmit={handleSubmit} autoComplete="off" sx={{width:880, mb:3,display:'flex',}}>
+    <Container component={'form'} onSubmit={handleSubmit} autoComplete="off" maxWidth="md" sx={{ height:400, display:'flex',}}>
         <FormControl component={'fieldset'} variant="standard" fullWidth>
             <FormLabel component={'legend'}>
                 <Typography variant="h2" color={'text.primary'} >{productId ? 'Edit Product' : 'Create Product'}</Typography>
@@ -144,7 +144,7 @@ const ProductForm = () => {
                 <TextField
                 label={'Title'}
                 variant="filled"
-                margin="normal"
+                margin="dense"
                 name={"title"}
                 value={product.title}
                 onChange={handleChange}
@@ -162,28 +162,28 @@ const ProductForm = () => {
                     {loadingUpload ? 'Uploading...' : 'Upload'}
                 </Button>
                 </Box>
-                <Box sx={{my:2, display:'flex', gap:2,}}>
-                {product.imageUrls.length > 0 && product.imageUrls.map((url: string, i: number) => (
-                <Box
-                 key={i}
-                 className="flex justify-between p-3 border  items-center rounded-md"
-                 width={200}
-                >
-                <img
-                  src={url}
-                  alt="listing image"
-                  className="w-20 h-20 object-contain rounded-lg"
-                />
-                <Button
-                  sx={{'&:hover':{bgcolor:'transparent'}, color:colors.greenAccent[500]}}
-                  onClick={() => handleRemoveImage(url, i)} >
-                  Delete
-                </Button>
-              </Box>
-            ))}
-            </Box>
+                <Box sx={{display:'flex', gap:2}}>
+                  {product.imageUrls.length > 0 && product.imageUrls.map((url: string, i: number) => (
+                    <Box
+                    key={i}
+                    className="flex justify-between p-3 border  items-center rounded-md"
+                    width={200}
+                    >
+                      <img
+                        src={url}
+                        alt="listing image"
+                        className="w-20 h-20 object-contain rounded-lg"
+                      />
+                      <Button
+                        sx={{'&:hover':{bgcolor:'transparent'}, color:colors.greenAccent[500]}}
+                        onClick={() => handleRemoveImage(url, i)} >
+                        Delete
+                      </Button>
+                    </Box>
+                  ))}
+                </Box>
                 <TextField
-                margin="normal"
+                margin="dense"
                 variant="filled"
                 label={'Description'}
                 name={'description'}
@@ -193,7 +193,7 @@ const ProductForm = () => {
                 multiline
                 />
                 <TextField
-                margin="normal"
+                margin="dense"
                 variant="filled"
                 label={'Price'}
                 name={"price"}
@@ -201,7 +201,7 @@ const ProductForm = () => {
                 onChange={handleChange}
                 />
                 <TextField
-                margin="normal"
+                margin="dense"
                 variant="filled"
                 label={"quantity"}
                 name={"quantity"}

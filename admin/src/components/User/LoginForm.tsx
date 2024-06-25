@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Button, Container, FormControl, FormGroup, FormLabel, TextField, Typography, useTheme } from "@mui/material"
-import { token } from "../../../Theme";
+import { token } from "../../Theme";
 import React, { useEffect, useState } from "react";
-import { User } from "../../models/User";
-import { useLoginMutation} from "../../redux/slices/userApi";
+import { User } from "../../app/models/User";
+import { useLoginMutation} from "../../app/redux/slices/userApi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setCredentials } from "../../redux/slices/authSlice";
+import { setCredentials } from "../../app/redux/slices/authSlice";
 import Loader from "../Loader";
 
 
@@ -45,7 +45,7 @@ const LoginForm = () => {
       e.preventDefault();
       setError(null);
       try{
-        const  res  = await login(user).unwrap();
+        const res= await login(user).unwrap();
         if(res.isAdmin === false){
           throw new Error("Unauthorized access");
         }

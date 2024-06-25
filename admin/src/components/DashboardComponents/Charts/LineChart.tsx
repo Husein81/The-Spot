@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Box, useTheme } from "@mui/material"
 import { ResponsiveLine } from '@nivo/line';
-import { token } from "../../../../Theme";
+import { token } from "../../../Theme";
 const LineChart = () => {
   const theme = useTheme();
   const colors = token(theme.palette.mode);

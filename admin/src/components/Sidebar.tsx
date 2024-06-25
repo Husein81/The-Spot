@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { 
-    AppBar,
     Box,   
+    Drawer,   
     IconButton, 
     List, 
     ListItem, 
@@ -23,10 +23,10 @@ import {
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import StoreIcon from '@mui/icons-material/Store';
-import { ColorModeContext, token } from "../../Theme";
-import { useLogoutApiCallMutation } from "../redux/slices/userApi";
+import { ColorModeContext, token } from "../Theme";
+import { useLogoutApiCallMutation } from "../app/redux/slices/userApi";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../redux/slices/authSlice";
+import { logout } from "../app/redux/slices/authSlice";
 interface Item{
     name: string,
     path?: string,
@@ -48,7 +48,7 @@ const Sidebar = () => {
         try{
             await logoutApiCall().unwrap();
             dispatch(logout());
-            navigate("/login")
+            navigate("/")
         }catch(error){
             console.log(error);
         }
@@ -104,14 +104,11 @@ const Sidebar = () => {
     const navigate = useNavigate();
   return (
     <>
-    <AppBar position="static"
-     sx={{  
-        width: 230,  
-        bgcolor:colors.primary[400],
-        display:'block',
-        minHeight:'100vh',
-        height:'100%',
-        }}>
+        <Drawer 
+        variant={"permanent"}
+        sx={{ width:230, flexShrink:0, 
+            '& .MuiDrawer-paper':{width:230, bgcolor:colors.primary[400]}}}
+        >
         <Box 
         display={'flex'} 
         flexDirection={'row'} 
@@ -119,7 +116,9 @@ const Sidebar = () => {
         alignItems={'center'}
         pt={2} px={3}>
         <Typography   variant="h4" color={'white'}>
-            <StoreIcon sx={{fontSize:24}}/> The Spot
+            <Link to={'/'}>
+                <StoreIcon sx={{fontSize:24}}/> The Spot
+            </Link>
         </Typography>
         <IconButton onClick={colorMode.toggleColorMode}>
             {theme.palette.mode === 'dark' ? 
@@ -134,8 +133,8 @@ const Sidebar = () => {
             <img src={userInfo.avatar} style={{borderRadius:50, width:54, height:54 ,cursor:'pointer'}} />
             <Typography variant="h5">{userInfo.username}</Typography>
         </Box>
-       {content}
-    </AppBar>
+            {content}
+        </Drawer>
     </>
   )
 }

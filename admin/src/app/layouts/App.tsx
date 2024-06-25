@@ -1,5 +1,5 @@
 import { Outlet, useLocation } from "react-router-dom"
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../../components/Sidebar";
 import {  
   Box,
   Container,
@@ -8,8 +8,8 @@ import {
 } from "@mui/material";
 import { ColorModeContext, useMode } from "../../Theme";
 import HomePage from "./HomePage";
-import LoginForm from "../components/User/LoginForm";
-import RegisterForm from "../components/User/RegisterForm";
+import LoginForm from "../../components/User/LoginForm";
+import RegisterForm from "../../components/User/RegisterForm";
 
 
 function App() {

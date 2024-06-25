@@ -8,8 +8,8 @@ import {
   TextField 
 } from "@mui/material"
 import { useState } from "react"
-import { Category } from "../../models/Category"
-import { useGetCategoriesQuery } from "../../redux/slices/categoryApi"
+import { Category } from "../../app/models/Category"
+import { useGetCategoriesQuery } from "../../app/redux/slices/categoryApi"
 import Loader from "../Loader"
 
 const CategoryForm = () => {

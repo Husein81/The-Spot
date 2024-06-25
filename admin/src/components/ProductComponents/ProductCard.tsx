@@ -1,5 +1,5 @@
 import React from "react";
-import { Product } from "../../models/Product";
+import { Product } from "../../app/models/Product";
 import { Button, Card, CardActions, CardContent, CardMedia, Typography } from "@mui/material";
 
 interface Props {

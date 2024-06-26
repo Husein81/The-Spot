@@ -28,3 +28,10 @@ export const orderApiSlice = apiSlice.injectEndpoints({
         })
     })
 });
+
+
+export const {
+    useGetOrdersQuery,
+    useGetOrderQuery,
+    useUpdateOrderStatusMutation
+} = orderApiSlice;

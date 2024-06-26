@@ -49,8 +49,14 @@ const CustomTable: React.FC<CustomTableProps> = ({ columns, rows, onEdit, onDele
             {columns.map((column) => (
               <TableCell key={column.id}>{column.label}</TableCell>
             ))}
-            <TableCell>Edit</TableCell>
-            <TableCell>Delete</TableCell>
+            {onDelete && onEdit ? 
+             ( 
+             <>
+              <TableCell>Edit</TableCell>
+              <TableCell>Delete</TableCell>
+             </>
+            ): <></>
+            }
           </TableRow>
         </TableHeadStyled>
         <TableBodyStyled>
@@ -59,16 +65,21 @@ const CustomTable: React.FC<CustomTableProps> = ({ columns, rows, onEdit, onDele
               {columns.map((column) => (
                 <TableCell key={column.id}>{row[column.id]}</TableCell>
               ))}
-              <TableCell>
-                <IconButton onClick={() => onEdit && onEdit(row[columns[0].id])}>
-                  <Edit/>
-                </IconButton>
-              </TableCell>
-              <TableCell>
-                <IconButton onClick={() => onDelete && onDelete(row[columns[0].id])}>
-                  <Delete/>
-                </IconButton>
-              </TableCell>
+              {onDelete && onEdit ?
+                 (<>
+                  <TableCell>
+                  <IconButton onClick={() => onEdit && onEdit(row[columns[0].id])}>
+                    <Edit/>
+                  </IconButton>
+                </TableCell>
+                <TableCell>
+                  <IconButton onClick={() => onDelete && onDelete(row[columns[0].id])}>
+                    <Delete/>
+                  </IconButton>
+                </TableCell>
+                 </> 
+                ) : <></>
+              }
             </TableRow>
           ))}
         </TableBodyStyled>

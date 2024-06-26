@@ -210,7 +210,7 @@ const ProductForm = () => {
                 />
             </FormGroup>
             <Box display={'flex'} justifyContent={'space-between'} py={2} >
-                <Button variant="contained" sx={{bgcolor:colors.greenAccent[500], color:'white', "&:hover":{bgcolor:colors.greenAccent[300]}}} type="submit" >{loadingCreate || loadingUpdate ? <Loader color="#fff"  /> : 'Submit'}</Button>
+                <Button variant="contained" sx={{bgcolor:colors.greenAccent[500], color:'white', "&:hover":{bgcolor:colors.greenAccent[300]}}} type="submit"  disabled={loadingCreate || loadingUpdate ? true : false}>{loadingCreate || loadingUpdate ?'Submiting...': 'Submit'}</Button>
                 <Button variant="outlined" sx={{borderColor:colors.greenAccent[500], color:colors.greenAccent[500], "&:hover":{borderColor:colors.greenAccent[300]}}} onClick={() => navigate('/products')}>Cancel</Button>
             </Box>
         </FormControl>

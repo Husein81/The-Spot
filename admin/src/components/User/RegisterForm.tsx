@@ -11,7 +11,6 @@ import {v4 as uuid} from 'uuid';
 import { Upload } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../../app/redux/slices/authSlice";
-import Loader from "../Loader";
 
 const RegisterForm: React.FC = () => {
   const theme = useTheme();
@@ -202,7 +201,7 @@ const RegisterForm: React.FC = () => {
               value={user.password}
               onChange={handleChange}
             />
-            <Button variant="contained" disabled={loadinbRegister && true } sx={{my:1, bgcolor:colors.greenAccent[500], "&:hover":{bgcolor:colors.greenAccent[400]}}} type="submit">{loadinbRegister ? <Loader/>: 'Submit'}</Button>
+            <Button variant="contained" disabled={loadinbRegister && true } sx={{my:1, bgcolor:colors.greenAccent[500], "&:hover":{bgcolor:colors.greenAccent[400]}}} type="submit">{loadinbRegister ? 'Submiting...': 'Submit'}</Button>
           </FormGroup>
           <Typography sx={{ color: colors.grey[500] }}>
             Don't have an account?

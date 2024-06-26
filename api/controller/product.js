@@ -3,17 +3,16 @@ import asyncHandler from "../middleware/async-handler.js";
 import Product from "../model/product.js";
 import { NotFoundError } from "../error/index.js";
 
-export const createProduct = asyncHandler(async (req, res) => {
-  const product = await Product.create(req.body);
-  
+export const createProduct = asyncHandler(async (req, res) => {  
+  const { title, price, description, imageUrls, quantity } = req.body;
+
+  const product = await Product.create({ title, price, description, imageUrls, quantity});
   res.status(StatusCodes.CREATED).json({ product });
 });
 
-
-
 export const getProducts = asyncHandler(async(req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = req.query.isAdmin === 'true' ? 100000 : 8;
+  const limit = req.query.isAdmin === 'true' ? 10000 : 8;
   const skip = (page - 1) * limit;
   
   const searchTerm = req.query.searchTerm

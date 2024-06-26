@@ -22,9 +22,8 @@ import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } f
 import { app } from "../../firebase";
 import { Upload } from "@mui/icons-material";
 import Loader from "../Loader";
-import { v4 as uuid} from 'uuid';
 import { token } from "../../Theme";
-
+import {v4 as uuid} from 'uuid';
 const ProductForm = () => {
     const { id: productId  } = useParams();
 
@@ -39,10 +38,10 @@ const ProductForm = () => {
     const [product, setProduct] = useState<Product>({
         _id: '',
         title: '',
+        imageUrls:[],
         description: '',
         price: 0,
-        quantity: '',
-        imageUrls:[]
+        quantity: 0,
     });
     
     const { data: fetchProduct , isLoading } = useGetProductQuery(productId!);
@@ -55,8 +54,8 @@ const ProductForm = () => {
         
     
     const handleChange = (e: React.ChangeEvent<HTMLInputElement |HTMLTextAreaElement>) => {
-        const { name , value } = e.target;
-        setProduct({...product, [name]: value});
+      const { name , value } = e.target;
+      setProduct({...product, [name]: value});
     }
 
     const storeImage = (file: File): Promise<string> => {
@@ -120,15 +119,21 @@ const ProductForm = () => {
     }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if(!productId){
-          product._id = uuid();
-          const data = await createProduct(product);
-          console.log(data)
-          navigate('/products')
-        }
-        else{
-          await updateProduct(product);
-          navigate('/products');
+        try{
+          if(!productId){
+            console.log("HI")
+            product._id = uuid();
+            console.log(product)
+            const data = await createProduct(product);
+            console.log(data)
+            navigate('/products')
+          }
+          else{
+            await updateProduct(product);
+            navigate('/products');
+          }
+        }catch(error){
+          console.log(error)
         }
     }
     
@@ -195,6 +200,7 @@ const ProductForm = () => {
                 <TextField
                 margin="dense"
                 variant="filled"
+                type="number"
                 label={'Price'}
                 name={"price"}
                 value={product.price}
@@ -202,6 +208,7 @@ const ProductForm = () => {
                 />
                 <TextField
                 margin="dense"
+                type="number"
                 variant="filled"
                 label={"quantity"}
                 name={"quantity"}

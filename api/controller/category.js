@@ -5,6 +5,7 @@ import Category from "../model/category.js";
 export const getCategories = asyncHandler(async(req, res) => {
     const pageSize = 8;
     const page = Number(req.query.page) || 1;
+    const limit = req.query.isAdmin === 'true' ? 100000 : 10
     const count = await Category.countDocuments();
     const categories = await Category.find().populate('parent')
         .limit(pageSize)

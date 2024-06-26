@@ -1,10 +1,10 @@
 export interface Product {
     _id: string;
-    imageUrls: string[] ;
     title: string;
+    imageUrls: string[] ;
     description?: string; // Optional property
     price: number;
-    quantity: string;
+    quantity: number;
     category?: string; // Assuming category is stored as a string ID
     createdAt?: Date;
     updatedAt?: Date;

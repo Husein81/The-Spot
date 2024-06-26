@@ -85,7 +85,7 @@ const Sidebar = () => {
                     {item.icon ? (<item.icon/>) : ''}
                     <ListItemText sx={{fontscolor:{xs:'#aeaeae',sm:'#eee'}}} primary={item.name}/>
                 </ListItem>
-            ))}
+                ))}
                 <ListItem button  
                     sx={{
                         '&:hover':{bgcolor:colors.greenAccent[500]}, 

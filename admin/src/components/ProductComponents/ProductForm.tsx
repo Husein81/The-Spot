@@ -23,7 +23,7 @@ import { app } from "../../firebase";
 import { Upload } from "@mui/icons-material";
 import Loader from "../Loader";
 import { token } from "../../Theme";
-import {v4 as uuid} from 'uuid';
+
 const ProductForm = () => {
     const { id: productId  } = useParams();
 
@@ -121,11 +121,7 @@ const ProductForm = () => {
         e.preventDefault();
         try{
           if(!productId){
-            console.log("HI")
-            product._id = uuid();
-            console.log(product)
-            const data = await createProduct(product);
-            console.log(data)
+            await createProduct(product);
             navigate('/products')
           }
           else{

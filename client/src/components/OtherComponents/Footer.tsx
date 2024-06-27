@@ -11,10 +11,10 @@ const Footer: React.FC = () => {
             <Typography variant="h6" gutterBottom>
               Company
             </Typography>
-            <Link href="/about" color="inherit" underline="hover" display="block">
-              About Us
+            <Link href="/" color="inherit" underline="hover" display="block">
+              Home
             </Link>
-            <Link href="/careers" color="inherit" underline="hover" display="block">
+            <Link href="/products" color="inherit" underline="hover" display="block">
               Products
             </Link>
             <Link href="/contact" color="inherit" underline="hover" display="block">

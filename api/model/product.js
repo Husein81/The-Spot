@@ -25,7 +25,8 @@ const productSchema = mongoose.Schema({
     },
     category: {
         type: mongoose.Types.ObjectId,
-        ref: 'Category'
+        ref: 'Category',
+        required: true
     }
 },{ timestamps: true});
 

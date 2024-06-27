@@ -1,6 +1,8 @@
 import { StatusCodes } from "http-status-codes";
 import asyncHandler from "../middleware/async-handler.js";
 import Category from "../model/category.js";
+import Product from "../model/product.js";
+import NotFoundError from "../error/not-found.js";
 
 export const getCategories = asyncHandler(async(req, res) => {
     const pageSize = 8;
@@ -32,8 +34,12 @@ export const updateCategory = asyncHandler(async(req, res) => {
 });
 
 export const deleteCategory = asyncHandler(async(req, res) => {
-    const {_id} = req.query;
+    const { id } = req.params;
+    const category = await Category.findById(id);
+    if(!category)
+        throw new NotFoundError("Category not found");
+    await category.findByIdAndDelete(id);
+    await Product.updateMany({category: id},{ $unset: {category: ""}});
 
-    await Category.deleteOne({_id});
-    res.status(StatusCodes.OK).json('Ok');
+    return res.status(StatusCodes.OK).send({message: "Category deleted successfully"});
 })

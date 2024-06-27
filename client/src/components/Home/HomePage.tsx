@@ -1,4 +1,4 @@
-import { Container, Pagination } from "@mui/material"
+import { Box, Container, Pagination } from "@mui/material"
 import Header from "./Header"
 import ProductList from "../ProductComponents/ProductList";
 import { useGetProductsQuery } from "../../apps/redux/Slice/productApi";
@@ -22,7 +22,7 @@ const HomePage = () => {
   return (
     <Container sx={{py:12}}>
         <Header/>
-        <Container>
+        <Box>
           <ProductList products={products}/>
           <br/>
           <Pagination 
@@ -31,7 +31,7 @@ const HomePage = () => {
             onChange={handleChange}
             variant={"outlined"} 
             shape={"rounded"}/>
-        </Container>
+        </Box>
     </Container>
   )
 }

@@ -32,6 +32,7 @@ const ProductTable: React.FC<Props> = ({ products }) => {
   const columns: CustomTableCell[] = [
     { id: '_id', label: 'ID'},
     { id: 'title', label: 'Title'},
+    { id: 'category', label: 'Category'},
     { id: 'price', label: 'Price' }, // Set type for number formatting
     { id: 'quantity', label: 'Quantity'},
   ];

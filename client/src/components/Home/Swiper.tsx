@@ -1,7 +1,7 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
-import { Box, Typography, Container } from '@mui/material';
+import { Box } from '@mui/material';
 
 
 import 'swiper/css';
@@ -12,7 +12,7 @@ import 'swiper/css/scrollbar';
 
 interface SlideProps{
   id: number;
-  title: string;
+  title?: string;
   image: string;
 }
 
@@ -23,7 +23,7 @@ interface SwiperProps {
 const SwiperComponent: React.FC<SwiperProps> = ({ slides }) => {
 
   return (
-    <Container sx={{ my: 4 }}>
+    <Box sx={{ my: 4 }}>
       <Swiper
         modules={[Autoplay, Pagination, Navigation]}
         spaceBetween={30}
@@ -40,29 +40,17 @@ const SwiperComponent: React.FC<SwiperProps> = ({ slides }) => {
         {slides.map((slide: SlideProps) => (
           <SwiperSlide key={slide.id}>
             <Box sx={{ position: 'relative', width: '100%', height: '300px' }}>
-              <img
+              <Box
+                component={"img"}
+                loading='lazy'
                 src={slide.image}
-                alt={slide.title}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ width: '100%', height: '100%', objectFit:'scale-down' }}
               />
-              <Typography
-                variant="h4"
-                sx={{
-                  position: 'absolute',
-                  bottom: '20px',
-                  left: '20px',
-                  color: '#fff',
-                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                  padding: '10px',
-                }}
-              >
-                {slide.title}
-              </Typography>
             </Box>
           </SwiperSlide>
         ))}
       </Swiper>
-    </Container>
+    </Box>
   );
 };
 

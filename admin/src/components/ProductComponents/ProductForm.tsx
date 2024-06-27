@@ -5,7 +5,10 @@ import {
   FormControl, 
   FormGroup, 
   FormLabel,  
-  IconButton,  
+  IconButton,    
+  MenuItem,  
+  Select,  
+  SelectChangeEvent,  
   TextField, 
   Typography,
   useTheme, 
@@ -23,6 +26,7 @@ import { app } from "../../firebase";
 import { Upload } from "@mui/icons-material";
 import Loader from "../Loader";
 import { token } from "../../Theme";
+import { useGetCategoriesQuery } from "../../app/redux/slices/categoryApi";
 
 const ProductForm = () => {
     const { id: productId  } = useParams();
@@ -42,10 +46,12 @@ const ProductForm = () => {
         description: '',
         price: 0,
         quantity: 0,
+        category: '',
     });
     
     const { data: fetchProduct , isLoading } = useGetProductQuery(productId!);
-        
+    const {data: fetchCategories} = useGetCategoriesQuery({});
+
     useEffect(() => {
         if(fetchProduct){
           setProduct(fetchProduct);
@@ -53,10 +59,11 @@ const ProductForm = () => {
     },[fetchProduct]);
         
     
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement |HTMLTextAreaElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement |HTMLTextAreaElement > | SelectChangeEvent) => {
       const { name , value } = e.target;
       setProduct({...product, [name]: value});
     }
+
 
     const storeImage = (file: File): Promise<string> => {
       return new Promise((resolve, reject) =>{
@@ -193,6 +200,14 @@ const ProductForm = () => {
                 rows={4}
                 multiline
                 />
+                  <Select
+                    value={product.category} 
+                    onChange={handleChange}
+                    variant={"filled"}>
+                    {fetchCategories?.categories.map((category) => (
+                      <MenuItem  key={category._id} value={category._id}>{category.name}</MenuItem>
+                    ))}
+                  </Select>
                 <TextField
                 margin="dense"
                 variant="filled"

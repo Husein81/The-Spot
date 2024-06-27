@@ -14,6 +14,7 @@ import {
 import { Store, Menu } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useAppSelector } from "../../apps/redux/hooks";
 
 interface Item {
     name: string;
@@ -21,7 +22,7 @@ interface Item {
 }
 const NavBar = () => {
     const [open, setOpen] = useState(false);
-
+    const cart = useAppSelector(state => state.cart.cart);
     const handleDrawer = () => {
         setOpen(!open);
     }
@@ -29,6 +30,7 @@ const NavBar = () => {
         {name: "Home", path: ""},
         {name: "Shop", path: "products"},
         {name: "Contact", path: "contact"},
+        {name:`Cart(${cart.length})`, path:"cart"}
     ]
     const contents = (menuItems.map((item, index) => (
             <ListItem button key={index}>

@@ -9,8 +9,8 @@ interface ProductLisProps {
 const ProductList: React.FC<ProductLisProps> = ({ products }) => {
   return (
     <Box className={"grid-cols-2 sm:grid-cols-3 md:grid-cols-4 grid gap-4"}>
-      {products.map((product: Product) => (
-        <Box>
+      {products.map((product: Product, index: number) => (
+        <Box key={index}>
           <ProductCard product={product}/>
         </Box>
       ))}

@@ -39,7 +39,7 @@ const CartPage = () => {
                         ))}
                     </Box>
                     <Box >
-                        <Box>    
+                        <Box display={'grid'} gap={1}>    
                             <Typography variant="h5">Total: ${getTotalPrice()}</Typography>
                             <Button variant="contained" color="primary">
                                 Checkout

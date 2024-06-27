@@ -4,7 +4,7 @@ import { Facebook, Twitter, Instagram } from '@mui/icons-material';
 
 const Footer: React.FC = () => {
   return (
-    <Box component="footer" sx={{ py: 4, backgroundColor: '#f8f8f8', mt: 4 }}>
+    <Box component="footer" sx={{ py: 4, backgroundColor: '#d8d8d8', mt: 4 }}>
       <Container maxWidth="lg">
         <Grid container spacing={4}>
           <Grid item xs={12} sm={4}>

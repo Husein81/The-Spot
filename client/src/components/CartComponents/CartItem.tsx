@@ -16,14 +16,14 @@ const CartItem: React.FC<CartItemProps> = ({ cartItem, onRemove, onUpdateQuantit
         }
     }
   return (
-    <Card>
+    <Card className="items-center gird sm:flex">
         <CardMedia
           component="img"
           className="hover:scale-105 transition-transform duration-500 ease-in-out cursor-pointer items-center"
           sx={{width:191}}
           image={cartItem.imageUrls[0]}
           alt={cartItem.title}/>
-        <CardContent>
+        <CardContent >
             <Typography variant="h5">{cartItem.title}</Typography>
             <Typography variant="subtitle1" color={"text.secondary"}>
                 ${cartItem.price.toFixed(2)}

@@ -62,10 +62,12 @@ const NavBar = () => {
                     color: '#fff',
                 },
             }}
-        >
-            <Typography variant="h6" component="div" className="items-center gap-1 flex">
-                <Store/>The Spot
-            </Typography>
+        >   
+            <Link to={'/'}>
+                <Typography variant="h6" component="div" className="items-center gap-1 flex">
+                    <Store/>The Spot
+                </Typography>
+            </Link>
             <List>
                 {contents}
             </List>
@@ -75,9 +77,11 @@ const NavBar = () => {
     <Box>
     <AppBarStyled>
         <ToolbarStyled >
-            <Typography variant="h6" component="div" className="items-center gap-1 flex">
-                <Store/>The Spot
-            </Typography>
+            <Link to={'/'}>
+                <Typography variant="h6" component="div" className="items-center gap-1 flex">
+                    <Store/>The Spot
+                </Typography>
+            </Link>
         <Hidden mdDown>
             <List component="nav" sx={{display:'flex'}}>
                 {contents}

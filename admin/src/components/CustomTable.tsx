@@ -35,11 +35,11 @@ const CustomTable: React.FC<CustomTableProps> = ({ columns, rows, onEdit, onDele
     const colors = token(theme.palette.mode);
 
     const TableHeadStyled = styled(TableHead)(() => ({
-        backgroundColor: colors.blueAccent[400],
+      backgroundColor: colors.blueAccent[400],
     }));
 
     const TableBodyStyled = styled(TableBody)(() => ({
-        backgroundColor: colors.primary[400],
+      backgroundColor: colors.primary[400],
     }))
   return (
     <TableContainer component={Paper}  >

@@ -16,7 +16,7 @@ const CartItem: React.FC<CartItemProps> = ({ cartItem, onRemove, onUpdateQuantit
         }
     }
   return (
-    <Card className="items-center gird sm:flex">
+    <Card className="items-center gird sm:flex -mx-2">
         <CardMedia
           component="img"
           className="hover:scale-105 transition-transform duration-500 ease-in-out cursor-pointer items-center"

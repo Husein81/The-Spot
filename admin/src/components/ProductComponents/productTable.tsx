@@ -40,7 +40,7 @@ const ProductTable: React.FC<Props> = ({ products }) => {
   return (    
     <Box> 
       <CustomTable columns={columns} rows={products} onDelete={handleDelete} onEdit={handleEdit}/>
-      {products.length ==0 && <Typography color={'error'} sx={{p:2,textAlign:'center'}}>Item Not Found</Typography>}
+      {products.length == 0 && <Typography color={'error'} sx={{p:2,textAlign:'center'}}>Item Not Found</Typography>}
     </Box>
   )
 };

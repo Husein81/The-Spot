@@ -26,16 +26,15 @@ const SwiperComponent: React.FC<SwiperProps> = ({ slides }) => {
     <Box sx={{ my: 4 }}>
       <Swiper
         modules={[Autoplay, Pagination, Navigation]}
-        spaceBetween={30}
-        centeredSlides={true}
+        centeredSlides
         autoplay={{
-          delay: 5000,
+          delay: 4000,
           disableOnInteraction: false,
         }}
         slidesPerView={1}
         navigation
         pagination={{ clickable: true }}
-        scrollbar={{ draggable: true }}
+
       >
         {slides.map((slide: SlideProps) => (
           <SwiperSlide key={slide.id}>

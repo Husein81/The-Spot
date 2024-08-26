@@ -3,11 +3,12 @@ import asyncHandler from "../middleware/async-handler.js";
 import Category from "../model/category.js";
 import Product from "../model/product.js";
 import NotFoundError from "../error/not-found.js";
+import { parse } from "dotenv";
 
 export const getCategories = asyncHandler(async(req, res) => {
-    const pageSize = 8;
+    const pageSize = parseInt(req.query.pageSize) ;
     const page = Number(req.query.page) || 1;
-    const limit = req.query.isAdmin === 'true' ? 100000 : 10
+    const limit = parseInt(req.query.pageSize) ;
     const count = await Category.countDocuments();
     const categories = await Category.find().populate('parent')
         .limit(pageSize)

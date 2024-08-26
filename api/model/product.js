@@ -13,6 +13,11 @@ const productSchema = mongoose.Schema({
     description: {
         type: String,
     },
+    cost:{
+        type: Number,
+        required: true,
+        default: 0
+    },
     price: {
         type: Number,
         required: true,
@@ -22,10 +27,6 @@ const productSchema = mongoose.Schema({
         type: Number,
         required: true,
         default: 1
-    },
-    color: {
-        type: String,
-        required: true,
     },
     category: {
         type: mongoose.Types.ObjectId,

@@ -1,26 +1,39 @@
-import { Box, Modal, styled, useTheme } from "@mui/material"
-import { token } from "../../Theme";
+import { Box, Modal, useTheme } from "@mui/material"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "../../app/redux/store";
+import { closeModal } from "../../app/redux/slice/modalSlice";
+import { token } from "../../app/theme/Colors";
 
-interface ModalProps {
-    open: boolean;
-    onClose: () => void;
-    content: JSX.Element;
-}
-const ModalContainer: React.FC<ModalProps> = ({open, onClose, content}) => {
-    const theme = useTheme();
+const ModalContainer = () => {
+    const theme=useTheme();
     const colors = token(theme.palette.mode);
-    const ModalStyle = styled(Modal)(() => ({
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: colors.primary[400],
-    }));
+    const dispatch = useDispatch();
+    const { open, body} = useSelector((state: RootState) => state.modal);
+
+    const closeHandler = () => {
+        dispatch(closeModal());
+    }
   return (
-    <ModalStyle open={open} onClose={onClose}>
-        <Box >
-            {content}
+    <Modal
+    open={open}
+    onClose={closeHandler} 
+    sx={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'rgba(0,0,0,0.1)'
+    }}
+    >
+        <Box 
+            maxWidth={450} 
+            width={'100%'} 
+            bgcolor={colors.white[500]} 
+            borderRadius={1}
+            p={2}
+            boxShadow={2}>
+            {body}
         </Box>
-    </ModalStyle>
+    </Modal>
   )
 }
 export default ModalContainer

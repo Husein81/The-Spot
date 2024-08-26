@@ -4,24 +4,22 @@ import Product from "../model/product.js";
 import { NotFoundError } from "../error/index.js";
 
 export const createProduct = asyncHandler(async (req, res) => {  
-  const { title, price, description, imageUrls, quantity } = req.body;
 
-  const product = await Product.create({ title, price, description, imageUrls, quantity});
+  const product = await Product.create(req.body);
   res.status(StatusCodes.CREATED).json({ product });
 });
 
 export const getProducts = asyncHandler(async(req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = req.query.isAdmin === 'true' ? 10000 : 8;
-  const skip = (page - 1) * limit;
+  const pageSize = parseInt(req.query.pageSize);
+  const skip = (page - 1) * pageSize;
   
   const searchTerm = req.query.searchTerm
   ? { title: { $regex: req.query.searchTerm, $options: "i" } }
   : {};
   
   const totalProducts = await Product.countDocuments(searchTerm);
-  const totalPages = Math.ceil(totalProducts / limit);
-
+  const totalPages = Math.ceil(totalProducts / pageSize);
 
   const sort = req.query.sort || 'createdAt';
         
@@ -30,7 +28,7 @@ export const getProducts = asyncHandler(async(req, res) => {
   const products = await Product.find(searchTerm)
     .sort({ [sort]: order})
     .skip(skip)
-    .limit(limit)
+    .limit(pageSize)
     .lean();
 
   res.status(StatusCodes.OK).json({ 
@@ -49,18 +47,23 @@ export const getProduct = asyncHandler(async(req, res) => {
   res.status(StatusCodes.OK).json( product );
 })
 
-export const updateProduct = asyncHandler(async(req, res, next) => {
+export const updateProduct = asyncHandler(async(req, res) => {
   const { id } = req.params;
   const product = await Product.findById(id);
 
   if(!product){
-    throw new NotFoundError("Listing not found");
+    throw new NotFoundError("Product not found");
   }
 
-  const updated = await Product.findByIdAndUpdate(id, req.body,{
-    new: true
-  });
+  product.title = req.body.title || product.title;
+  product.cost = req.body.cost || product.cost;
+  product.price = req.body.price || product.price;
+  product.description = req.body.description || product.description;
+  product.imageUrls = req.body.imageUrls || product.imageUrls;
+  product.quantity = req.body.quantity || product.quantity;
+  product.updatedAt = Date.now();
 
+  const updated = await product.save();
   res.status(StatusCodes.OK).json( updated );
 });
 

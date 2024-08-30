@@ -65,7 +65,9 @@ const Navbar: FC<Props> = ({ setToggle }) => {
           </Typography>
         </Box>
         <Box>
-          <Searchbar pageModel={pageModel} searchTerm={searchTermHandler} />
+          <Hidden smDown>
+            <Searchbar pageModel={pageModel} searchTerm={searchTermHandler} />
+          </Hidden>
         </Box>
         <IconButton color="secondary">
           <ShoppingBagOutlined sx={{ fontSize: 32 }} />

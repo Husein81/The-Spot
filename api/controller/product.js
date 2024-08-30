@@ -22,7 +22,7 @@ export const getProducts = asyncHandler(async (req, res) => {
 
   const sort = req.query.sort || "createdAt";
 
-  const order = req.query.order || "desc";
+  const order = req.query.order === "asc" ? 1 : -1;
 
   const products = await Product.find(searchTerm)
     .sort({ [sort]: order })

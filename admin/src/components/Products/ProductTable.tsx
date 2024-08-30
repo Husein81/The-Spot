@@ -13,6 +13,7 @@ import { openModal } from "../../app/redux/slice/modalSlice";
 import ProductsForm from "./ProductsForm";
 import Loader from "../Others/Loader";
 import DeletingForm from "../Others/DeletingForm";
+import { useGetCategoriesQuery } from "../../app/redux/slice/categoryApi";
 
 type Props = {
   colors: ColorSet;
@@ -32,7 +33,11 @@ const ProductTable: FC<Props> = ({
 }) => {
   const dispatch = useDispatch();
   const [deleteProduct] = useDeleteProductMutation();
-
+  const { data: cat } = useGetCategoriesQuery({
+    page: 1,
+    pageSize: 1000,
+    searchTerm: "",
+  });
   if (isLoading) return <Loader />;
 
   const paginationHandler = (pageModel: { page: number; pageSize: number }) => {
@@ -53,6 +58,7 @@ const ProductTable: FC<Props> = ({
     );
   };
 
+  const categories = cat?.categories || [];
   const initialState: GridInitialStateCommunity = {
     pagination: {
       paginationModel: {
@@ -86,8 +92,11 @@ const ProductTable: FC<Props> = ({
     return {
       id: product._id,
       ...product,
+      categoryName: categories.find((cat) => cat._id === product.category)
+        ?.name,
     };
   });
+
   const columns: GridColDef[] = [
     { field: "title", headerName: "Title", width: 100 },
     {
@@ -106,7 +115,11 @@ const ProductTable: FC<Props> = ({
     { field: "cost", headerName: "Cost", width: 100 },
     { field: "price", headerName: "Price", width: 100 },
     { field: "quantity", headerName: "Quantity", width: 100 },
-    { field: "category", headerName: "Category", width: 100 },
+    {
+      field: "categoryName",
+      headerName: "Category",
+      width: 100,
+    },
     {
       field: "updatedAt",
       headerName: "Updated At",

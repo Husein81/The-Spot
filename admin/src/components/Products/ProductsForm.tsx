@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  Autocomplete,
   Button,
   Container,
   FormControl,
@@ -32,6 +33,7 @@ import {
   handleImageSubmit,
   handleRemoveImage,
 } from "../../app/utils/generateImage";
+import { useGetCategoriesQuery } from "../../app/redux/slice/categoryApi";
 type Props = {
   colors: ColorSet;
   id?: string;
@@ -53,6 +55,12 @@ const ProductsForm: FC<Props> = ({ id, colors, refetch }) => {
   const { data: product, refetch: refetchById } = useGetProductQuery(id!, {
     skip: !id,
   });
+  const { data } = useGetCategoriesQuery({
+    page: 1,
+    pageSize: 1000,
+    searchTerm: "",
+  });
+  const categories = data?.categories || [];
 
   useEffect(() => {
     if (product) {
@@ -67,72 +75,6 @@ const ProductsForm: FC<Props> = ({ id, colors, refetch }) => {
       [name]: value,
     });
   };
-
-  // Image handling
-  // const storeImage = (file: File): Promise<string> => {
-  //   return new Promise((resolve, reject) => {
-  //     const storage = getStorage(app);
-  //     const filename = new Date().getTime() + file.name;
-  //     const storageRef = ref(storage, filename);
-  //     const uploadTask = uploadBytesResumable(storageRef, file);
-  //     uploadTask.on(
-  //       "state_changed",
-  //       (snapshot) => {
-  //         const progress =
-  //           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-  //         console.log(`Upload is ${progress}% done`);
-  //       },
-  //       (error) => reject(error),
-  //       () => {
-  //         getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) =>
-  //           resolve(downloadUrl)
-  //         );
-  //       }
-  //     );
-  //   });
-  // };
-
-  // const handleImageSubmit = () => {
-  //   const newImage = images as FileList;
-  //   if (
-  //     newImage.length > 0 &&
-  //     newImage.length + formData.imageUrls.length < 7
-  //   ) {
-  //     setLoadingUpload(true);
-  //     const promises: Promise<string>[] = [];
-  //     for (let i = 0; i < newImage.length; i++) {
-  //       promises.push(storeImage(newImage.item(i) as File));
-  //     }
-  //     Promise.all(promises)
-  //       .then((urls: any) =>
-  //         setFormData({
-  //           ...formData,
-  //           imageUrls: formData.imageUrls.concat(urls),
-  //         })
-  //       )
-  //       .then(() => setLoadingUpload(false))
-  //       .catch(() => {
-  //         setLoadingUpload(false);
-  //         console.log("Image upload failed (2 mb max per image)");
-  //       });
-  //   } else {
-  //     setLoadingUpload(false);
-  //     console.log("You can only upload 6 images per listing");
-  //   }
-  // };
-
-  // const handleRemoveImage = (url: string, index: number) => {
-  //   const imageName = url.split("/")[7].split("?")[0];
-  //   const storage = getStorage(app);
-  //   const storageRef = ref(storage, imageName);
-  //   deleteObject(storageRef).catch(() =>
-  //     console.log("Unable to delete the image")
-  //   );
-  //   setFormData({
-  //     ...formData,
-  //     imageUrls: formData.imageUrls.filter((_: any, i: number) => i !== index),
-  //   });
-  // };
 
   const imageSubmitHandler = () => {
     handleImageSubmit(images!, formData, setLoadingUpload, setFormData);
@@ -221,15 +163,20 @@ const ProductsForm: FC<Props> = ({ id, colors, refetch }) => {
             formData={formData}
             handleRemoveImage={removeImageHandler}
           />
-          <TextField
-            margin="dense"
-            label="Category"
-            name="category"
-            value={formData.category}
-            onChange={changeHandler}
-            fullWidth
+          <Autocomplete
+            options={categories}
+            getOptionLabel={(option) => option.name}
+            value={categories.find((cat) => cat._id === formData.category)}
+            onChange={(e, value) => {
+              setFormData({
+                ...formData,
+                category: value?._id || "",
+              });
+            }}
+            renderInput={(params) => (
+              <TextField {...params} margin="dense" label="Category" />
+            )}
           />
-
           <Button
             variant="contained"
             type="submit"

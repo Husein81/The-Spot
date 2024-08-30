@@ -7,12 +7,13 @@ import { apiSlice } from "./apiSlice";
 const productApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query<ProductPagination, Pagination>({
-      query: ({ page, pageSize, searchTerm }) => ({
+      query: ({ page, pageSize, searchTerm, sort }) => ({
         url: PRODUCT_URL,
         params: {
-          page: page,
-          pageSize: pageSize,
-          searchTerm: searchTerm,
+          page,
+          pageSize,
+          searchTerm,
+          sort,
         },
         method: "GET",
       }),

@@ -5,17 +5,21 @@ import { Link } from "react-router-dom";
 import { RootState } from "../redux/store";
 import { openModal } from "../redux/slice/modalSlice";
 import { token } from "../theme/Colors";
+import { logout } from "../redux/slice/authSlice";
 
 const Home = () => {
     const theme = useTheme();
     const colors = token(theme.palette.mode);
     const dispatch = useDispatch(); 
+
     const { user } = useSelector((state: RootState) => state.auth);
     console.log(user);
     const handleOpenModal = (body: JSX.Element) => {
       dispatch(openModal(body));
     }
-    
+    const onLogoutHandler = () => {
+      dispatch(logout());
+    }
   return (
     <Box 
       sx={{
@@ -29,22 +33,25 @@ const Home = () => {
         m:-1,
         alignItems:'center',
       }}>
+        <Box width={350} display={'flex'} flexDirection={'column'} gap={2}>
         <Typography variant='h3' align='center' color='white'>Welcome To The Inventory System</Typography>
         {user === null ?
-         (<Button variant='contained' color="secondary" onClick={()=> handleOpenModal(<LoginForm/>)}>
+         (<Button variant='contained' fullWidth color="secondary" onClick={()=> handleOpenModal(<LoginForm/>)}>
             Login
           </Button>) 
           : 
           (
-            <Box display={'flex'} flexDirection={'column'} gap={1}>
-              <Typography variant='h3' color='white'>
-                <Link to='/dashboard'>Go To Dashboard</Link>
-              </Typography>
-              <Button variant={"contained"} color="secondary" onClick={() =>{}}>Logout</Button>
+            <Box display={'flex'} flexDirection={'column'} gap={2} >
+                <Link to='/dashboard' style={{textDecoration:'none'}}>
+                  <Typography variant='h3' color='white' align={'center'}>
+                    Go To Dashboard
+                  </Typography>
+                </Link>
+              <Button variant={"contained"} color="secondary" onClick={onLogoutHandler}>Logout</Button>
             </Box>
           )
         }
-
+      </Box>
     </Box>
   )
 }

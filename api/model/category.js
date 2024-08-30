@@ -1,15 +1,18 @@
 import mongoose from "mongoose";
 
-const categorySchema = mongoose.Schema({
+const categorySchema = mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
-    parent: {
-        type: mongoose.Types.ObjectId,
-        ref:'Category'
-    }
-},{timestamp: true});
+    imageUrls: {
+      type: Array,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
-const Category = mongoose.model("Category",categorySchema);
+const Category = mongoose.model("Category", categorySchema);
 export default Category;

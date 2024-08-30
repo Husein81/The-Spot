@@ -6,7 +6,8 @@ type AuthState = {
 }
 
 const initialState: AuthState = {
-    user: null,
+    user: localStorage.getItem('user') 
+    ? JSON.parse(localStorage.getItem('user') as string) : null,
 }
 const authSlice = createSlice({
     name: "auth",
@@ -14,9 +15,11 @@ const authSlice = createSlice({
     reducers: { 
         logout: (state) =>{
             state.user = null
+            localStorage.removeItem('user')
         },
         setUser: (state, action: PayloadAction<User>) => {
             state.user = action.payload
+            localStorage.setItem('user', JSON.stringify(action.payload))
         }
     },
 });

@@ -1,5 +1,5 @@
 import { Login, Register, User } from "../../model/User";
-import { LOGIN_URL, REGISTER_URL } from "../URL";
+import { LOGIN_URL, LOGOUT_URL, REGISTER_URL } from "../URL";
 import { apiSlice } from "./apiSlice";
 
 const useApi = apiSlice.injectEndpoints({
@@ -17,11 +17,18 @@ const useApi = apiSlice.injectEndpoints({
                 method: 'POST',
                 body
             })
+        }),
+        logoutUser: builder.mutation({
+            query:() =>({
+                url: LOGOUT_URL,
+                method: 'POST'
+            })
         })
     }),
 });
 
 export const { 
     useLoginMutation,
-    useRegisterMutation
+    useRegisterMutation,
+    useLogoutUserMutation
 } = useApi;

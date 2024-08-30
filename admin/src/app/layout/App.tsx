@@ -8,11 +8,16 @@ import '@fontsource/roboto/700.css';
 import ModalContainer from "../../components/Modal/ModalContainer";
 import Home from "./Home";
 import { useMode } from "../theme/Colors";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 
 const App = () => {
   const location = useLocation();
   const [theme] = useMode();
+
+  const { user} = useSelector((state:RootState) => state.auth);
+  console.log(user);
   return (
     <Box>
       <ThemeProvider theme={theme}>

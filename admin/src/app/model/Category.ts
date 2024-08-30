@@ -1,5 +1,5 @@
 export interface Category {
-    id?:string;
-    name:string;
-    parent?:string;
+  _id?: string;
+  name: string;
+  imageUrls?: string[];
 }

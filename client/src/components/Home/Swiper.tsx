@@ -18,13 +18,15 @@ const SwiperComponent: FC<Props> = ({ imageUrls }) => {
     <Box border={1} height={500}>
       <Swiper
         modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
-        spaceBetween={50}
+        spaceBetween={0}
         slidesPerView={1}
-        pagination={{ clickable: true }}
+        pagination={{
+          clickable: true,
+          dynamicBullets: true,
+          dynamicMainBullets: 2,
+        }}
         scrollbar={{ draggable: true }}
-        autoplay={{ delay: 3000, disableOnInteraction: false }}
-        onSlideChange={() => console.log("slide change")}
-        onSwiper={(swiper) => console.log(swiper)}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
       >
         {imageUrls.map((url, index) => (
           <SwiperSlide key={index}>

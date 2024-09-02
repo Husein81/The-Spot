@@ -8,11 +8,16 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   product: Product;
 };
 const ProductCard: FC<Props> = ({ product }) => {
+  const navigate = useNavigate();
+  const navigateHandler = () => {
+    navigate(`/products/${product._id}`);
+  };
   const image = product.imageUrls[0];
   return (
     <Card
@@ -33,6 +38,7 @@ const ProductCard: FC<Props> = ({ product }) => {
         p={1}
       >
         <Box
+          onClick={navigateHandler}
           component={"img"}
           src={image}
           alt={product.title}
@@ -50,10 +56,12 @@ const ProductCard: FC<Props> = ({ product }) => {
       </Box>
       <CardContent sx={{ flex: 1 }}>
         <Typography variant="body1">{product.title}</Typography>
-        <Typography variant="body1">{product.price}</Typography>
+        <Typography variant="body2" color={"grey"}>
+          $ {product.price.toFixed(2)}
+        </Typography>
       </CardContent>
       <CardActions>
-        <Button fullWidth variant="contained">
+        <Button fullWidth variant="contained" onClick={navigateHandler}>
           Add To Cart
         </Button>
       </CardActions>

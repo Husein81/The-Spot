@@ -4,6 +4,7 @@ import { useMode } from "../theme/Colors";
 import SideBar from "../../components/Others/Bars/SideBar";
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
+import ModalContainer from "../../components/Modal/ModalContainer";
 
 function App() {
   const theme = useMode();
@@ -12,6 +13,7 @@ function App() {
     <Box>
       <ThemeProvider theme={theme}>
         <Box sx={{ m: -1 }}>
+          <ModalContainer />
           <Navbar setToggle={setToggle} />
           <SideBar toggle={toggle} setToggle={setToggle} />
           <Outlet />

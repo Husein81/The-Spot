@@ -1,10 +1,19 @@
-import { Box, Button, Divider, Drawer, InputBase } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Drawer,
+  InputBase,
+  List,
+  ListItemButton,
+} from "@mui/material";
 import { FC } from "react";
 import { Pagination } from "../../../app/models/pagination/Pagintation";
 import { Search } from "@mui/icons-material";
 // import { token } from "../../app/theme/Colors";
 import { useGetProductsQuery } from "../../../app/redux/slice/productApi";
 import Loader from "../Loader";
+import { useNavigate } from "react-router-dom";
 type Props = {
   toggle: boolean;
   setToggle: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,12 +22,17 @@ type Props = {
 };
 const DownBar: FC<Props> = ({ toggle, setToggle, pageModel, searchTerm }) => {
   // const colors = token();
+  const navigate = useNavigate();
   const { data: products, isLoading } = useGetProductsQuery({
     page: pageModel.page,
     pageSize: pageModel.pageSize,
     searchTerm: pageModel.searchTerm,
   });
   const toggleHandler = () => {
+    setToggle(false);
+  };
+  const navigateHandler = (id: string) => {
+    navigate(`/products/${id}`);
     setToggle(false);
   };
   return (
@@ -49,25 +63,34 @@ const DownBar: FC<Props> = ({ toggle, setToggle, pageModel, searchTerm }) => {
         </Button>
       </Box>
       <Divider />
-      <Box>
+      <List>
         {pageModel.searchTerm !== "" &&
           (isLoading ? (
             <Loader />
           ) : (
             products?.products.map((product) => (
-              <Box
+              <ListItemButton
                 key={product._id}
-                m={2}
-                display={"flex"}
-                alignItems={"center"}
-                justifyContent={"space-between"}
+                onClick={() => navigateHandler(product._id as string)}
+                sx={{}}
               >
-                <Box component={"img"} src={product.imageUrls[0]} width={50} />
-                <Box>{product.title}</Box>
-              </Box>
+                <Box
+                  m={2}
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"space-between"}
+                >
+                  <Box
+                    component={"img"}
+                    src={product.imageUrls[0]}
+                    width={50}
+                  />
+                  <Box>{product.title}</Box>
+                </Box>
+              </ListItemButton>
             ))
           ))}
-      </Box>
+      </List>
     </Drawer>
   );
 };

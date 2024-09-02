@@ -1,17 +1,19 @@
 import { createBrowserRouter, RouteObject } from "react-router-dom";
 import App from "../layout/App";
 import Home from "../layout/Home";
-import Product from "../layout/Product";
+import Products from "../layout/Products";
 import { Search } from "@mui/icons-material";
+import Product from "../../components/Products/Product";
 
 const routes: RouteObject[] = [
   {
     path: "/",
     element: <App />,
     children: [
-      { path: "/Home", element: <Home /> },
-      { path: "/product", element: <Product /> },
+      { path: "/", element: <Home /> },
+      { path: "/products", element: <Products /> },
       { path: "/search", element: <Search /> },
+      { path: "/products/:id", element: <Product /> },
     ],
   },
 ];

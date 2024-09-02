@@ -1,49 +1,41 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FilterList, SwapVert } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Divider,
-  Hidden,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Divider, Hidden, Typography } from "@mui/material";
 import { FC } from "react";
+import { useGetCategoriesQuery } from "../../app/redux/slice/categoryApi";
 
 type Props = {
   onSort: (sort: string) => void;
-  refetch: () => any;
+  refetch?: () => any;
 };
-const ProductFiltering: FC<Props> = ({ onSort, refetch }) => {
-  const onSortHandler = (sort: string) => {
-    onSort(sort);
-    refetch();
+const ProductFiltering: FC<Props> = ({ onSort }) => {
+  const { data } = useGetCategoriesQuery({
+    page: 1,
+    pageSize: 5,
+    searchTerm: "",
+  });
+
+  const onFilterHandler = (id: string) => {
+    onSort(id);
   };
+  const categories = data?.categories;
+  // console.log(categories[1]._id);
   return (
     <Box>
       <Hidden smDown>
         <Box>
-          <Typography variant="h4">Filter</Typography>
-          <Divider sx={{ width: 200 }} />
+          <Typography textAlign={"center"} variant="h5">
+            Filtered By
+          </Typography>
+          <Divider />
           <Box display={"flex"} flexDirection={"column"}>
-            <Button onClick={() => onSortHandler("category")}>Category</Button>
-            <Button onClick={() => onSortHandler("price")}>Price</Button>
-          </Box>
-        </Box>
-      </Hidden>
-      <Hidden smUp>
-        <Box display={"flex"} py={1}>
-          <Box display={"flex"} alignItems={"center"}>
-            <IconButton>
-              <FilterList />
-            </IconButton>
-            <Typography>Filters</Typography>
-          </Box>
-          <Box display={"flex"} alignItems={"center"}>
-            <IconButton>
-              <SwapVert />
-            </IconButton>
-            <Typography>Sort</Typography>
+            {categories?.map((category) => (
+              <Button
+                key={category._id}
+                onClick={() => onFilterHandler(category._id as string)}
+              >
+                {category.name}
+              </Button>
+            ))}
           </Box>
         </Box>
       </Hidden>

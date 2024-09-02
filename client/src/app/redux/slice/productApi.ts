@@ -4,16 +4,18 @@ import { Product } from "../../models/Product";
 import { PRODUCT_URL } from "../URL";
 import { apiSlice } from "./apiSlice";
 
+type Prop = { page: number; pageSize: number; category: string };
 const productApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query<ProductPagination, Pagination>({
-      query: ({ page, pageSize, searchTerm, sort }) => ({
+      query: ({ page, pageSize, searchTerm, sort, order }) => ({
         url: PRODUCT_URL,
         params: {
           page,
           pageSize,
           searchTerm,
           sort,
+          order,
         },
         method: "GET",
       }),
@@ -24,7 +26,21 @@ const productApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getProductByCategory: builder.query<ProductPagination, Prop>({
+      query: ({ page, pageSize, category }) => ({
+        url: `${PRODUCT_URL}/category/${category}`,
+        params: {
+          page,
+          pageSize,
+        },
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetProductsQuery, useGetProductQuery } = productApi;
+export const {
+  useGetProductsQuery,
+  useGetProductQuery,
+  useGetProductByCategoryQuery,
+} = productApi;

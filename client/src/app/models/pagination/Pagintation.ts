@@ -3,4 +3,5 @@ export interface Pagination {
   pageSize: number;
   searchTerm?: string;
   sort?: string;
+  order?: string;
 }

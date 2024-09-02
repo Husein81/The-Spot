@@ -45,6 +45,31 @@ export const getProduct = asyncHandler(async (req, res) => {
   res.status(StatusCodes.OK).json(product);
 });
 
+export const getProductByCategory = asyncHandler(async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const pageSize = parseInt(req.query.pageSize);
+  const skip = (page - 1) * pageSize;
+
+  const { category } = req.params;
+
+  const totalCount = await Product.countDocuments();
+
+  const totalPages = Math.ceil(totalCount / pageSize);
+
+  const products = await Product.find({ category })
+    .limit(pageSize)
+    .skip(skip)
+    .lean();
+  if (!products) throw new NotFoundError("Product not found");
+
+  res.status(StatusCodes.OK).json({
+    currentPage: page,
+    totalPages,
+    totalCount,
+    products,
+  });
+});
+
 export const updateProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const product = await Product.findById(id);

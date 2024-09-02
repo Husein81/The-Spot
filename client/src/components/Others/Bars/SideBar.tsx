@@ -28,8 +28,8 @@ const SideBar: FC<Props> = ({ toggle, setToggle }) => {
     setToggle(!toggle);
   };
   const menuItems: Item[] = [
-    { name: "Home", icon: <Store />, link: "/Home" },
-    { name: "product", icon: <Sell />, link: "/product" },
+    { name: "Home", icon: <Store />, link: "/" },
+    { name: "products", icon: <Sell />, link: "/products" },
   ];
   const navigateHandler = (link: string) => {
     navigate(link);

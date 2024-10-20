@@ -52,12 +52,16 @@ export const getProductByCategory = asyncHandler(async (req, res) => {
 
   const { category } = req.params;
 
-  const totalCount = await Product.countDocuments();
+  const totalCount = await Product.countDocuments(category);
 
   const totalPages = Math.ceil(totalCount / pageSize);
+  const sort = req.query.sort || "createdAt";
+
+  const order = req.query.order === "asc" ? 1 : -1;
 
   const products = await Product.find({ category })
     .limit(pageSize)
+    .sort({ [sort]: order })
     .skip(skip)
     .lean();
   if (!products) throw new NotFoundError("Product not found");

@@ -11,8 +11,8 @@ import { authorizedRoles, isAuthenticatedUser } from "../middleware/auth.js";
 const router = express.Router();
 
 router.get("/", getCategories);
-router.get("/:id", isAuthenticatedUser, authorizedRoles, getCategory);
-router.post("/", isAuthenticatedUser, authorizedRoles, createCategory);
-router.put("/:id", isAuthenticatedUser, authorizedRoles, updateCategory);
-router.delete("/:id", isAuthenticatedUser, authorizedRoles, deleteCategory);
+router.get("/:id", getCategory);
+router.post("/", createCategory);
+router.put("/:id", updateCategory);
+router.delete("/:id", deleteCategory);
 export default router;

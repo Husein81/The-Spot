@@ -25,6 +25,7 @@ export const getProducts = asyncHandler(async (req, res) => {
   const order = req.query.order === "asc" ? 1 : -1;
 
   const products = await Product.find(searchTerm)
+    .populate("category")
     .sort({ [sort]: order })
     .skip(skip)
     .limit(pageSize)
@@ -39,7 +40,7 @@ export const getProducts = asyncHandler(async (req, res) => {
 });
 
 export const getProduct = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.id).populate("category");
   if (!product) throw new NotFoundError("Product not found");
 
   res.status(StatusCodes.OK).json(product);
@@ -60,6 +61,7 @@ export const getProductByCategory = asyncHandler(async (req, res) => {
   const order = req.query.order === "asc" ? 1 : -1;
 
   const products = await Product.find({ category })
+    .populate("category")
     .limit(pageSize)
     .sort({ [sort]: order })
     .skip(skip)
@@ -88,6 +90,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
   product.description = req.body.description || product.description;
   product.imageUrls = req.body.imageUrls || product.imageUrls;
   product.quantity = req.body.quantity || product.quantity;
+  product.category = req.body.category || product.category;
   product.updatedAt = Date.now();
 
   const updated = await product.save();

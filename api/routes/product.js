@@ -13,8 +13,8 @@ const router = express.Router();
 router.get("/", getProducts);
 router.get("/category/:category", getProductByCategory);
 router.get("/:id", getProduct);
-router.post("/", isAuthenticatedUser, authorizedRoles, createProduct);
-router.put("/:id", isAuthenticatedUser, authorizedRoles, updateProduct);
-router.delete("/:id", isAuthenticatedUser, authorizedRoles, deleteProduct);
+router.post("/", createProduct);
+router.put("/:id", updateProduct);
+router.delete("/:id", deleteProduct);
 
 export default router;

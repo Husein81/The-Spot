@@ -2,23 +2,23 @@ import { z } from "zod";
 
 // enums
 export enum OrderStatus {
-  PENDING = "PENDING",
-  PROCESSING = "PROCESSING",
-  SHIPPED = "SHIPPED",
-  DELIVERED = "DELIVERED",
-  CANCELLED = "CANCELLED",
+  PENDING = "pending",
+  PROCESSING = "processing",
+  SHIPPED = "shipped",
+  DELIVERED = "delivered",
+  CANCELLED = "cancelled",
 }
 export enum PaymentMethod {
-  CREDIT_CARD = "CREDIT_CARD",
-  PAYPAL = "PAYPAL",
-  BANK_TRANSFER = "BANK_TRANSFER",
-  CASH_ON_DELIVERY = "CASH_ON_DELIVERY",
+  CREDIT_CARD = "credit_card",
+  PAYPAL = "paypal",
+  BANK_TRANSFER = "bank_transfer",
+  CASH_ON_DELIVERY = "cash_on_delivery",
 }
 export enum PaymentStatus {
-  PENDING = "PENDING",
-  COMPLETED = "COMPLETED",
-  FAILED = "FAILED",
-  REFUNDED = "REFUNDED",
+  PENDING = "pending",
+  COMPLETED = "completed",
+  FAILED = "failed",
+  REFUNDED = "refunded",
 }
 
 // schemas
@@ -83,10 +83,11 @@ export const paymentSchema = z.object({
   status: z.nativeEnum(PaymentStatus),
 });
 
-const paginationSchema = z.object({
+export const paginationSchema = z.object({
   page: z.number().int().positive().default(1),
   limit: z.number().int().positive().default(10),
 });
+
 export const paginatedResponseSchema = <T>(itemSchema: z.ZodType<T>) =>
   z.object({
     data: z.array(itemSchema),
@@ -104,6 +105,7 @@ export type OrderItem = z.infer<typeof orderItemSchema>;
 export type Payment = z.infer<typeof paymentSchema>;
 
 // Paginated responses
+export type Paginate = z.infer<typeof paginationSchema>;
 export type PaginatedProductResponse = z.infer<
   ReturnType<typeof paginatedResponseSchema<typeof productSchema>>
 >;

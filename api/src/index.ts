@@ -4,7 +4,12 @@ import dotenv from "dotenv";
 import express from "express";
 
 // Local imports
-import { authRouter, categoryRouter, productRouter } from "./routers/index.js";
+import {
+  authRouter,
+  categoryRouter,
+  orderRouter,
+  productRouter,
+} from "./routers/index.js";
 import prisma from "./utils/prisma.js";
 
 dotenv.config();
@@ -18,9 +23,10 @@ app.use(cors());
 app.use("/api/auth", authRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/product", productRouter);
+app.use("/api/order", orderRouter);
 
 // connection
-await prisma.connection();
+await prisma.$connect();
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);

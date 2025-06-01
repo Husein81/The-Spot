@@ -1,0 +1,35 @@
+{
+  "welcome": "Bienvenue à The Spot!",
+  "description": "Votre solution unique pour tous vos besoins.",
+  "login": {
+    "title": "Connectez-vous à votre compte",
+    "email": "Email",
+    "password": "Mot de passe",
+    "button": "Connexion"
+  },
+  "signup": {
+    "title": "Créer un nouveau compte",
+    "name": "Nom",
+    "email": "Email",
+    "password": "Mot de passe",
+    "button": "S'inscrire"
+  },
+  "footer": {
+    "contact": "Contactez-nous",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation"
+  },
+  "navigation": {
+    "home": "Home",
+    "about": "À propos de nous",
+    "services": "Services",
+    "contact": "Contact",
+    "login": "Connexion"
+  },
+  "table":{
+    "next": "Suivant",
+    "previous": "Précédent",
+    "page": "Page",
+    "current": "Page actuelle"
+  }
+}

@@ -6,6 +6,7 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import { ThemeProvider } from "./components/theme-provider";
 import "./index.css";
+import "./locales/i18n"; // Import i18n configuration for translations
 
 // Create a new router instance
 const router = createRouter({ routeTree });

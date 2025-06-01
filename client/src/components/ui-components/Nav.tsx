@@ -1,16 +1,18 @@
-import { ModeToggle } from "../mode-toggle";
-import { Icon } from ".";
-import { Button } from "../ui/button";
 import { useAuthStore } from "@/store/authStore";
 import { useNavigate } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
+import { Icon } from ".";
+import { ModeToggle } from "../mode-toggle";
+import { Button } from "../ui/button";
 
 const Nav = () => {
   const { user } = useAuthStore();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   return (
     <nav className="flex items-center justify-between shadow-md border-b p-4">
       <div className="">
-        <h2 className="text-2xl font-bold">The Spot</h2>
+        <h2 className="text-2xl font-bold">{t("welcome")}</h2>
       </div>
       <div className="flex items-center gap-4">
         <Button variant="outline" size="icon">
@@ -27,7 +29,7 @@ const Nav = () => {
           </div>
         ) : (
           <Button variant="outline" onClick={() => navigate({ to: "/login" })}>
-            Login
+            {t("login.button")}
           </Button>
         )}
       </div>

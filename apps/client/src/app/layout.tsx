@@ -1,5 +1,10 @@
+// global imports
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+
+// local imports
+import Providers from "../components/providers";
+
 import "@repo/ui/globals.css";
 
 const geistSans = localFont({
@@ -24,7 +29,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+        <Providers>
+          <div className="container mx-auto p-4">{children}</div>
+        </Providers>
       </body>
     </html>
   );

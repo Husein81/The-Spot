@@ -1,13 +1,13 @@
 import Fastify from "fastify";
 import dotenv from "dotenv";
 import { connectOrderDB } from "@repo/order-db";
-import { clerkPlugin } from "@clerk/fastify";
+import clerk from "@clerk/fastify";
 
 dotenv.config();
 
 const fastify = Fastify();
 
-fastify.register(clerkPlugin);
+fastify.register(clerk.clerkPlugin);
 
 const port = process.env.PORT;
 

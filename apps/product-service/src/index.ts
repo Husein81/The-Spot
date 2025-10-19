@@ -17,8 +17,8 @@ app.use(
 
 app.use(clerkMiddleware());
 
-app.use("/api/v1/products", productRouter);
-app.use("/api/v1/categories", categoryRouter);
+app.use("/products", productRouter);
+app.use("/categories", categoryRouter);
 const PORT = process.env.PORT;
 
 app.listen(PORT, () =>

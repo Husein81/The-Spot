@@ -19,11 +19,13 @@
   "engines": {
     "node": ">=18"
   },
-  "dependencies": { 
-    "@repo/ui": "workspace:*",
+  "dependencies": {
     "@clerk/nextjs": "^6.33.7",
+    "@repo/ui": "workspace:*",
     "@shadcn/ui": "^0.0.4",
     "@tailwindcss/postcss": "^4.1.14",
+    "axios": "^1.12.2",
+    "lucide-react": "^0.546.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.14"
   }

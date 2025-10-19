@@ -3,8 +3,7 @@ import { prisma, Prisma } from "@repo/product-db";
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    const data: Prisma.ProductCreateInput = req.body;
-
+    const data = req.body as Prisma.ProductCreateInput;
     const { colors, images } = data;
 
     if (!colors || !Array.isArray(colors) || colors.length === 0) {

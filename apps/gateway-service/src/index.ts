@@ -74,19 +74,19 @@ const validateServiceUrl = (serviceName: string, url: string | undefined) => {
 app.use(
   "/api/products",
   validateServiceUrl("product-service", PRODUCT_SERVICE_URL),
-  createServiceProxy(PRODUCT_SERVICE_URL!, "/api/products")
+  createServiceProxy(PRODUCT_SERVICE_URL!)
 );
 
 app.use(
   "/api/orders",
   validateServiceUrl("order-service", ORDER_SERVICE_URL),
-  createServiceProxy(ORDER_SERVICE_URL!, "/api/orders")
+  createServiceProxy(ORDER_SERVICE_URL!)
 );
 
 app.use(
   "/api/payments",
   validateServiceUrl("payment-service", PAYMENT_SERVICE_URL),
-  createServiceProxy(PAYMENT_SERVICE_URL!, "/api/payments")
+  createServiceProxy(PAYMENT_SERVICE_URL!)
 );
 
 // 404 handler

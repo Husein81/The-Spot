@@ -24,16 +24,9 @@ const fetchProducts = async ({
 
   const url = `${baseUrl}/api/products?${queryParams.toString()}`;
 
-  const res = await fetch(url, {
-    cache: "no-store", // or 'force-cache' depending on your needs
-  });
+  const res = await axios.get(url);
 
-  if (!res.ok) {
-    console.error("Failed to fetch products:", res.status, await res.text());
-    return { data: [], totalPages: 0, totalCount: 1, currentPage: 0 }; // fallback
-  }
-
-  const data = await res.json();
+  const data = await res.data;
   return data;
 };
 
@@ -56,7 +49,7 @@ const ProductList = async ({
   });
   return (
     <ProductListClient
-      params={{
+      searchParams={{
         category,
         sort,
         search,

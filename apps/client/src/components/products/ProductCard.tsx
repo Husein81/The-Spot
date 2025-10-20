@@ -4,6 +4,7 @@ import { ProductType } from "@repo/types";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import Select from "../Select";
 
 type Props = {
   product: ProductType;
@@ -50,25 +51,18 @@ const ProductCard = ({ product }: Props) => {
             {/* Size */}
             <div className="flex flex-col gap-1">
               <span className="text">Size</span>
-              <Shad.Select
+              <Select
+                options={product.sizes.map((size) => ({
+                  label: size,
+                  value: size,
+                }))}
+                placeholder={productTypes.size}
+                label="Size"
+                size="sm"
                 onValueChange={(value) =>
                   handleProductType({ type: "size", value })
                 }
-              >
-                <Shad.SelectTrigger size="sm">
-                  <Shad.SelectValue placeholder={productTypes.size} />
-                </Shad.SelectTrigger>
-                <Shad.SelectContent>
-                  <Shad.SelectGroup>
-                    <Shad.SelectLabel>Sizes</Shad.SelectLabel>
-                    {product.sizes.map((size) => (
-                      <Shad.SelectItem key={size} value={size}>
-                        {size}
-                      </Shad.SelectItem>
-                    ))}
-                  </Shad.SelectGroup>
-                </Shad.SelectContent>
-              </Shad.Select>
+              />
             </div>
 
             {/* Colors */}
@@ -105,4 +99,5 @@ const ProductCard = ({ product }: Props) => {
     </Shad.Card>
   );
 };
+
 export default ProductCard;

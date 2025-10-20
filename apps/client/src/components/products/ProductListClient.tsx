@@ -1,13 +1,16 @@
 "use client";
-import type { ProductType } from "@repo/types";
-import ProductCard from "./ProductCard";
-import { Button, Skeleton } from "@repo/ui";
-import { useRouter } from "next/navigation";
 import { useGetProducts } from "@/hooks/products";
+import type { ProductType } from "@repo/types";
+import { Button } from "@repo/ui";
+import { useRouter } from "next/navigation";
+import SkeletonList from "../SkeletonList";
+import ProductCard from "./ProductCard";
+import Filter from "../Filter";
+import Pagination from "../Pagination";
 
 type Props = {
   initialProducts: Array<ProductType>;
-  params: {
+  searchParams: {
     category: string;
     sort?: string;
     search?: string;
@@ -15,55 +18,44 @@ type Props = {
   };
 };
 
-const ProductListClient = ({ initialProducts, params }: Props) => {
+const ProductListClient = ({ initialProducts, searchParams }: Props) => {
   const router = useRouter();
   const { data: productsPaginated, isLoading } = useGetProducts(
-    params,
+    searchParams,
     initialProducts
   );
   return (
-    <div className="flex flex-col gap-4">
-      <div
-        className={
-          "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
-        }
-      >
-        {isLoading ? (
-          <>
-            {[...Array(8)].map((_, idx) => (
-              <div
-                key={idx}
-                className="flex flex-col space-y-3 rounded-2xl border p-4 shadow-sm"
-              >
-                {/* Product Image */}
-                <Skeleton className="h-48 w-full rounded-xl" />
-
-                <div className="space-y-2">
-                  {/* Product Name */}
-                  <Skeleton className="h-4 w-3/4" />
-
-                  {/* Description */}
-                  <Skeleton className="h-3 w-5/6" />
-                  <Skeleton className="h-3 w-4/5" />
-
-                  {/* Price */}
-                  <Skeleton className="h-5 w-1/3" />
-                </div>
-
-                {/* Add to Cart Button */}
-                <Skeleton className="h-10 w-full rounded-xl" />
-              </div>
-            ))}
-          </>
-        ) : (
-          productsPaginated?.data?.map((product) => (
+    <div className="flex flex-col gap-6">
+      {searchParams.params === "products" && <Filter />}
+      {isLoading ? (
+        <SkeletonList />
+      ) : (
+        <div
+          className={
+            "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+          }
+        >
+          {productsPaginated?.data?.map((product) => (
             <ProductCard key={product.id} product={product} />
-          ))
-        )}
-      </div>
-      <Button className="w-full" onClick={() => router.push("/products")}>
-        View All
-      </Button>
+          ))}
+        </div>
+      )}
+      {searchParams.params === "homepage" ? (
+        <Button className="w-full" onClick={() => router.push("/products")}>
+          View all products
+        </Button>
+      ) : (
+        <Pagination
+          pagination={productsPaginated!}
+          onPageChange={(page) => {
+            const params = new URLSearchParams({
+              ...searchParams,
+              page: String(page),
+            });
+            router.push(`/products?${params.toString()}`);
+          }}
+        />
+      )}
     </div>
   );
 };

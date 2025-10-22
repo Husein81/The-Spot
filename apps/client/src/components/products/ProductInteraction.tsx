@@ -4,6 +4,7 @@ import { ProductType } from "@repo/types";
 import { Button, cn, Icon } from "@repo/ui";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 type Props = {
   product: ProductType;
@@ -47,6 +48,7 @@ const ProductInteraction = ({
       selectedColor,
       selectedSize,
     });
+    toast.success("Product added to cart");
   };
 
   return (

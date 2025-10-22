@@ -1,10 +1,12 @@
 "use client";
-import { Button, Shad } from "@repo/ui";
+import { Button, Icon, Shad } from "@repo/ui";
 import { ProductType } from "@repo/types";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import Select from "../Select";
+import { useCartStore } from "@/store/cartStore";
+import { toast } from "react-toastify";
 
 type Props = {
   product: ProductType;
@@ -23,6 +25,18 @@ const ProductCard = ({ product }: Props) => {
     value: string;
   }) => {
     setProductTypes((prev) => ({ ...prev, [type]: value }));
+  };
+
+  const { addToCart } = useCartStore();
+
+  const handleAddToCart = () => {
+    addToCart({
+      ...product,
+      quantity: 1,
+      selectedColor: productTypes.color,
+      selectedSize: productTypes.size,
+    });
+    toast.success("Product added to cart");
   };
 
   return (
@@ -94,7 +108,10 @@ const ProductCard = ({ product }: Props) => {
       </Shad.CardContent>
       <Shad.CardFooter className="flex items-center justify-between">
         <span className="font-medium">${product.price.toFixed(2)}</span>
-        <Button className="cursor-pointer">Add To Card</Button>
+        <Button className="cursor-pointer" onClick={handleAddToCart}>
+          <Icon name="ShoppingCart" />
+          Add To Cart
+        </Button>
       </Shad.CardFooter>
     </Shad.Card>
   );

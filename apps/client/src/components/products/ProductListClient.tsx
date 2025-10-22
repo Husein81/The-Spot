@@ -1,6 +1,6 @@
 "use client";
 import { useGetProducts } from "@/hooks/products";
-import type { ProductType } from "@repo/types";
+import type { Pagination as PaginationType, ProductType } from "@repo/types";
 import { Button } from "@repo/ui";
 import { useRouter } from "next/navigation";
 import SkeletonList from "../SkeletonList";
@@ -9,8 +9,10 @@ import Filter from "../Filter";
 import Pagination from "../Pagination";
 
 type Props = {
-  initialProducts: Array<ProductType>;
+  initialData: PaginationType<ProductType>;
   searchParams: {
+    page?: string;
+    limit?: string;
     category: string;
     sort?: string;
     search?: string;
@@ -18,12 +20,13 @@ type Props = {
   };
 };
 
-const ProductListClient = ({ initialProducts, searchParams }: Props) => {
+const ProductListClient = ({ initialData, searchParams }: Props) => {
   const router = useRouter();
-  const { data: productsPaginated, isLoading } = useGetProducts(
+  const { data: productsPaginated, isLoading } = useGetProducts({
     searchParams,
-    initialProducts
-  );
+    initialData,
+  });
+
   return (
     <div className="flex flex-col gap-6">
       {searchParams.params === "products" && <Filter />}
@@ -41,20 +44,33 @@ const ProductListClient = ({ initialProducts, searchParams }: Props) => {
         </div>
       )}
       {searchParams.params === "homepage" ? (
-        <Button className="w-full" onClick={() => router.push("/products")}>
+        <Button className="mx-auto" onClick={() => router.push("/products")}>
           View all products
         </Button>
       ) : (
-        <Pagination
-          pagination={productsPaginated!}
-          onPageChange={(page) => {
-            const params = new URLSearchParams({
-              ...searchParams,
-              page: String(page),
-            });
-            router.push(`/products?${params.toString()}`);
-          }}
-        />
+        productsPaginated && (
+          <Pagination<ProductType>
+            pagination={productsPaginated}
+            onPageChange={(page) => {
+              const params = new URLSearchParams();
+
+              // Preserve all existing search params
+              if (searchParams.category)
+                params.set("category", searchParams.category);
+              if (searchParams.limit) params.set("limit", searchParams.limit);
+              if (searchParams.sort) params.set("sort", searchParams.sort);
+              if (searchParams.search)
+                params.set("search", searchParams.search);
+              if (searchParams.params)
+                params.set("params", searchParams.params);
+
+              // Set the new page
+              params.set("page", page.toString());
+
+              router.push(`/products?${params.toString()}`);
+            }}
+          />
+        )
       )}
     </div>
   );

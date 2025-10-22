@@ -67,7 +67,9 @@ export const getProducts = async (req: Request, res: Response) => {
   const orderBy = (() => {
     switch (sort) {
       case "asc":
-        return { price: Prisma.SortOrder.asc };
+        return {
+          price: Prisma.SortOrder.asc,
+        };
         break;
       case "desc":
         return { price: Prisma.SortOrder.desc };
@@ -81,6 +83,7 @@ export const getProducts = async (req: Request, res: Response) => {
     }
   })();
 
+  const count = await prisma.product.count();
   const data = await prisma.product.findMany({
     where: {
       category: {
@@ -88,16 +91,17 @@ export const getProducts = async (req: Request, res: Response) => {
       },
       name: {
         contains: search as string,
-        mode: "insensitive",
+        mode: Prisma.QueryMode.insensitive,
       },
     },
     orderBy,
+    skip: (currentPage - 1) * pageSize,
     take: limit ? pageSize : undefined,
   });
 
   return res.status(200).json({
     data,
-    totalPages: Math.ceil(data.length / pageSize),
+    totalPages: Math.ceil(count / pageSize),
     currentPage,
     totalCount: data.length,
   });

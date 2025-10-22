@@ -1,42 +1,30 @@
-import React, { useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button, Input, Shad } from "@repo/ui";
-
-// Generic pagination props shape
-export type PaginationData<T> = {
-  data: T[];
-  totalCount: number;
-  currentPage: number; // 1-based
-  totalPages: number;
-};
+import { Button } from "@repo/ui";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react";
+import { useMemo } from "react";
+import type { Pagination as PaginationType } from "@repo/types";
 
 type Props<T> = {
-  pagination: PaginationData<T>;
+  pagination: PaginationType<T>;
   onPageChange: (page: number) => void;
-  pageSizeOptions?: number[]; // optional page size selector values (if you want it)
-  onPageSizeChange?: (size: number) => void; // if using server-side page size
-  maxPageButtons?: number; // how many page number buttons to show in the middle
+  maxPageButtons?: number;
 };
-
-/**
- * Shadcn-compatible Pagination component
- * - Accepts a pagination object of shape { data, totalCount, currentPage, totalPages }
- * - Emits onPageChange(pageNumber)
- * - Optionally supports pageSize selection via pageSizeOptions + onPageSizeChange
- */
 
 export default function Pagination<T>({
   pagination,
   onPageChange,
-  pageSizeOptions,
-  onPageSizeChange,
   maxPageButtons = 5,
 }: Props<T>) {
-  const { totalCount, currentPage, totalPages } = pagination;
-  const [jumpValue, setJumpValue] = useState<string>("");
+  const { totalCount, currentPage, totalPages, data } = pagination;
 
-  // Build an array of page numbers to display using a sliding window strategy
+  // 🔹 Generate visible page numbers
   const pages = useMemo(() => {
+    if (totalPages <= 0) return [];
+
     const pagesArr: number[] = [];
     if (totalPages <= maxPageButtons) {
       for (let i = 1; i <= totalPages; i++) pagesArr.push(i);
@@ -45,9 +33,9 @@ export default function Pagination<T>({
 
     const half = Math.floor(maxPageButtons / 2);
     let start = Math.max(1, currentPage - half);
-    let end = Math.min(totalPages, start + maxPageButtons - 1);
+    const end = Math.min(totalPages, start + maxPageButtons - 1);
 
-    // if we are at the end, shift window to the left
+    // Adjust window if near the end
     if (end - start + 1 < maxPageButtons) {
       start = Math.max(1, end - maxPageButtons + 1);
     }
@@ -57,22 +45,35 @@ export default function Pagination<T>({
   }, [totalPages, currentPage, maxPageButtons]);
 
   const goto = (page: number) => {
-    if (page < 1) page = 1;
-    if (page > totalPages) page = totalPages;
-    if (page === currentPage) return;
+    if (page < 1 || page > totalPages || page === currentPage) return;
     onPageChange(page);
   };
 
+  if (totalPages <= 1) return null; // no pagination needed
+
   return (
-    <div className="flex items-center justify-between gap-4 w-full">
-      {/* Left: summary */}
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 w-full">
+      {/* Left summary */}
       <div className="text-sm text-muted-foreground">
-        Showing <span className="font-medium">{pagination.data.length}</span> of{" "}
+        Showing <span className="font-medium">{data.length}</span> of{" "}
         <span className="font-medium">{totalCount}</span> results
       </div>
 
-      {/* Middle: page buttons */}
-      <nav className="inline-flex items-center gap-2" aria-label="Pagination">
+      {/* Page buttons */}
+      <nav
+        className="flex items-center gap-1"
+        aria-label="Pagination Navigation"
+      >
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => goto(1)}
+          disabled={currentPage <= 1}
+          aria-label="First page"
+        >
+          <ChevronsLeft className="h-4 w-4" />
+        </Button>
+
         <Button
           variant="ghost"
           size="sm"
@@ -83,7 +84,7 @@ export default function Pagination<T>({
           <ChevronLeft className="h-4 w-4" />
         </Button>
 
-        {/* first page + ellipsis if needed */}
+        {/* Show first page + ellipsis */}
         {pages[0]! > 1 && (
           <>
             <Button
@@ -93,10 +94,11 @@ export default function Pagination<T>({
             >
               1
             </Button>
-            {pages[0]! > 2 && <span className="px-2">…</span>}
+            {pages[0]! > 2 && <span className="px-1">…</span>}
           </>
         )}
 
+        {/* Visible pages */}
         {pages.map((p) => (
           <Button
             key={p}
@@ -109,11 +111,11 @@ export default function Pagination<T>({
           </Button>
         ))}
 
-        {/* last page + ellipsis if needed */}
+        {/* Show last page + ellipsis */}
         {pages[pages.length - 1]! < totalPages && (
           <>
             {pages[pages.length - 1]! < totalPages - 1 && (
-              <span className="px-2">…</span>
+              <span className="px-1">…</span>
             )}
             <Button
               size="sm"
@@ -133,6 +135,16 @@ export default function Pagination<T>({
           aria-label="Next page"
         >
           <ChevronRight className="h-4 w-4" />
+        </Button>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => goto(totalPages)}
+          disabled={currentPage >= totalPages}
+          aria-label="Last page"
+        >
+          <ChevronsRight className="h-4 w-4" />
         </Button>
       </nav>
     </div>

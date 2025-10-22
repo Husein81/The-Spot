@@ -25,23 +25,25 @@ const fetchProducts = async ({
   const url = `${baseUrl}/api/products?${queryParams.toString()}`;
 
   const res = await axios.get(url);
-
-  const data = await res.data;
-  return data;
+  return res.data;
 };
 
 const ProductList = async ({
+  page,
+  limit,
   category,
   sort,
   search,
   params,
 }: {
+  page: string;
+  limit: string;
   category: string;
   sort?: string;
   search?: string;
   params: "homepage" | "products";
 }) => {
-  const { data } = await fetchProducts({
+  const initialData = await fetchProducts({
     category,
     sort,
     search,
@@ -50,12 +52,14 @@ const ProductList = async ({
   return (
     <ProductListClient
       searchParams={{
+        page,
+        limit,
         category,
         sort,
         search,
         params,
       }}
-      initialProducts={data}
+      initialData={initialData}
     />
   );
 };

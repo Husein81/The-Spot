@@ -1,4 +1,4 @@
-import { Shad } from "@repo/ui";
+import { cn, Shad } from "@repo/ui";
 type Option = {
   label: string;
   value: string;
@@ -8,19 +8,22 @@ type Props = {
   options: Option[];
   label?: string;
   placeholder?: string;
+  className?: string;
   size?: "default" | "sm";
   onValueChange: (value: string) => void;
 };
+
 const Select = ({
   options,
   label,
   placeholder,
+  className,
   size = "default",
   onValueChange,
 }: Props) => {
   return (
     <Shad.Select onValueChange={onValueChange}>
-      <Shad.SelectTrigger size={size}>
+      <Shad.SelectTrigger className={cn(className)} size={size}>
         <Shad.SelectValue placeholder={placeholder ?? "Select an option"} />
       </Shad.SelectTrigger>
       <Shad.SelectContent>
@@ -36,4 +39,5 @@ const Select = ({
     </Shad.Select>
   );
 };
+
 export default Select;

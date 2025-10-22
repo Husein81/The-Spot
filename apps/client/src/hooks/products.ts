@@ -1,33 +1,30 @@
 import { productApi } from "@/lib/apis/productApi";
-import { ProductType } from "@repo/types";
+import { ProductType, type Pagination } from "@repo/types";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
-export const useGetProducts = (
-  params: {
+export const useGetProducts = ({
+  searchParams,
+  initialData,
+}: {
+  searchParams: {
+    page?: string;
+    limit?: string;
     category: string;
     sort?: string;
     search?: string;
     params: "homepage" | "products";
-  },
-  initialData: ProductType[]
-): UseQueryResult<{
-  data: ProductType[];
-  totalPages: number;
-  totalCount: number;
-  currentPage: number;
-}> =>
-  useQuery({
-    queryKey: ["products"],
-    queryFn: () => productApi.getProducts(params),
-    initialData: {
-      data: initialData,
-      totalPages: 1,
-      totalCount: initialData.length,
-      currentPage: 1,
-    },
+  };
+  initialData: Pagination<ProductType>;
+}): UseQueryResult<Pagination<ProductType>, Error> => {
+  return useQuery({
+    queryKey: ["products", searchParams],
+    queryFn: () => productApi.getProducts(searchParams),
+    initialData:
+      !searchParams.page || searchParams.page === "1" ? initialData : undefined,
     staleTime: 1000 * 60 * 5, // 5 minutes
-    refetchOnWindowFocus: true, // Refetch when tab regains focus
+    refetchOnWindowFocus: false, // Don't refetch when tab regains focus
     refetchOnReconnect: true, // Refetch when network reconnects
-    refetchOnMount: true, // Refetch when component mounts
+    refetchOnMount: false, // Don't refetch when component mounts if we have data
     retry: 3, // Retry failed requests 3 times
   });
+};

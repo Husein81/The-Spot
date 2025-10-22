@@ -10,11 +10,15 @@ const api = axios.create({
 
 export const productApi = {
   getProducts: async ({
+    page,
+    limit,
     category,
     sort,
     search,
     params,
   }: {
+    page?: string;
+    limit?: string;
     category: string;
     sort?: string;
     search?: string;
@@ -23,16 +27,19 @@ export const productApi = {
     try {
       const response = await api.get("/products", {
         params: {
+          page,
+          limit,
           category,
           sort,
           search,
           params,
         },
       });
+      console.log("res", response.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching products:", error);
-      return { data: [], totalPages: 0, totalCount: 0, currentPage: 0 }; // fallback
+      throw new Error("Failed to fetch products", error as Error);
     }
   },
 };

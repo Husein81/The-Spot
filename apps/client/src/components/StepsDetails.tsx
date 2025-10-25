@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import ShippingForm from "./ShippingForm";
 import { useState } from "react";
 import { ShippingFormInputs } from "@repo/types";
+import PaymentForm from "./StripePaymentForm";
 
 const StepsDetails = ({ selectedStep }: { selectedStep: number }) => {
   const { cart, removeFromCart } = useCartStore();
@@ -74,8 +75,12 @@ const StepsDetails = ({ selectedStep }: { selectedStep: number }) => {
         ) : selectedStep === 2 ? (
           <ShippingForm setShippingForm={setShippingForm} />
         ) : selectedStep === 3 ? (
-          <div></div>
-        ) : null}
+          <PaymentForm shippingForm={shippingForm!} />
+        ) : (
+          <p className="text-sm text-gray-500">
+            Please fill in the shipping form to continue.
+          </p>
+        )}
       </Shad.Card>
 
       {/* COL 2 */}

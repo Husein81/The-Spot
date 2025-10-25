@@ -16,7 +16,8 @@
     "@clerk/express": "^1.7.41",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "@repo/kafka": "workspace:*"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

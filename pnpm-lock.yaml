@@ -100,12 +100,6 @@ importers:
       '@repo/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@stripe/react-stripe-js':
-        specifier: ^5.2.0
-        version: 5.2.0(@stripe/stripe-js@8.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@stripe/stripe-js':
-        specifier: ^8.1.0
-        version: 8.1.0
       '@tanstack/react-query':
         specifier: ^5.90.5
         version: 5.90.5(react@19.1.0)
@@ -137,6 +131,12 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
+      '@stripe/react-stripe-js':
+        specifier: ^5.0.0
+        version: 5.0.0(@stripe/stripe-js@8.0.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@stripe/stripe-js':
+        specifier: ^8.0.0
+        version: 8.0.0
       '@types/node':
         specifier: ^22.15.3
         version: 22.15.3
@@ -204,6 +204,9 @@ importers:
       '@clerk/fastify':
         specifier: ^2.4.41
         version: 2.4.41(fastify@5.6.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@repo/kafka':
+        specifier: workspace:*
+        version: link:../../packages/kafka
       '@repo/order-db':
         specifier: workspace:*
         version: link:../../packages/order-db
@@ -235,6 +238,15 @@ importers:
 
   apps/payment-service:
     dependencies:
+      '@clerk/fastify':
+        specifier: ^2.4.41
+        version: 2.4.41(fastify@5.6.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@fastify/cors':
+        specifier: ^11.1.0
+        version: 11.1.0
+      '@repo/kafka':
+        specifier: workspace:*
+        version: link:../../packages/kafka
       cors:
         specifier: ^2.8.5
         version: 2.8.5
@@ -248,18 +260,27 @@ importers:
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
+      '@repo/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@types/cors':
         specifier: ^2.8.19
         version: 2.8.19
+      stripe:
+        specifier: ^18.0.0
+        version: 18.0.0
 
   apps/product-service:
     dependencies:
       '@clerk/express':
         specifier: ^1.7.41
         version: 1.7.41(express@5.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@repo/kafka':
+        specifier: workspace:*
+        version: link:../../packages/kafka
       '@repo/product-db':
         specifier: workspace:*
         version: link:../../packages/product-db
@@ -324,6 +345,19 @@ importers:
       typescript-eslint:
         specifier: ^8.40.0
         version: 8.40.0(eslint@9.34.0(jiti@2.6.1))(typescript@5.9.2)
+
+  packages/kafka:
+    dependencies:
+      kafkajs:
+        specifier: ^2.2.4
+        version: 2.2.4
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: ^24.8.1
+        version: 24.8.1
 
   packages/order-db:
     dependencies:
@@ -535,6 +569,9 @@ packages:
 
   '@fastify/ajv-compiler@4.0.4':
     resolution: {integrity: sha512-VfPkOSmob5YqH4ZUYW4ESVV5dDNbmtNEKJADFm43Hn/T48RxTZjUIBouadRDb4M/qr8g5bAxxu40/MGxvCPDrw==}
+
+  '@fastify/cors@11.1.0':
+    resolution: {integrity: sha512-sUw8ed8wP2SouWZTIbA7V2OQtMNpLj2W6qJOYhNdcmINTu6gsxVYXjQiM9mdi8UUDlcoDDJ/W2syPo1WB2QjYA==}
 
   '@fastify/error@4.2.0':
     resolution: {integrity: sha512-RSo3sVDXfHskiBZKBPRgnQTtIqpi/7zhJOEmAxCiBcM7d0uwdGdxLlsCaLzGs8v8NnxIRlfG0N51p5yFaOentQ==}
@@ -1167,15 +1204,15 @@ packages:
   '@standard-schema/spec@1.0.0':
     resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
 
-  '@stripe/react-stripe-js@5.2.0':
-    resolution: {integrity: sha512-m6CFXWjI5yikOcaP1L9xiabgkljdhu8vspoqF+BDD9mIjZIh1yEjeU0++oefqlXBd9U3QZj+C2ds4t3BDmICMg==}
+  '@stripe/react-stripe-js@5.0.0':
+    resolution: {integrity: sha512-SUv97BPNxV4VxTRj+QbkHsZMGVMREBTuO38wuSIPCXyKRSsy/IzzqKEkxRUympLD9TXRHIJwZNhCzhOdx0mVTw==}
     peerDependencies:
       '@stripe/stripe-js': '>=8.0.0 <9.0.0'
       react: '>=16.8.0 <20.0.0'
       react-dom: '>=16.8.0 <20.0.0'
 
-  '@stripe/stripe-js@8.1.0':
-    resolution: {integrity: sha512-bhhi0iSHDFRa2pPVv3WOHC6x/iGEu5AZqIiAvXsT8VOucsEre9gzgsK0jFzbzfGW2eeubF+mCdTTYwNAQCMJKg==}
+  '@stripe/stripe-js@8.0.0':
+    resolution: {integrity: sha512-dLvD55KT1cBmrqzgYRgY42qNcw6zW4HS5oRZs0xRvHw9gBWig5yDnWNop/E+/t2JK+OZO30zsnupVBN2MqW2mg==}
     engines: {node: '>=12.16'}
 
   '@swc/helpers@0.5.15':
@@ -2393,6 +2430,10 @@ packages:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
     engines: {node: '>=4.0'}
 
+  kafkajs@2.2.4:
+    resolution: {integrity: sha512-j/YeapB1vfPT2iOIUn/vxdyKEuhuY2PxMBvf5JWux6iSaukAccrMtXEY/Lb7OvavDhOWME589bpLrEdnVHjfjA==}
+    engines: {node: '>=14.0.0'}
+
   kareem@2.6.3:
     resolution: {integrity: sha512-C3iHfuGUXK2u8/ipq9LfjFfXFxAZMQJJq7vLS45r3D9Y2xQ/m4S8zaR4zMLFWh9AsNPXmcFfUDhTEO8UIC/V6Q==}
     engines: {node: '>=12.0.0'}
@@ -3168,6 +3209,10 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
 
+  stripe@18.0.0:
+    resolution: {integrity: sha512-3Fs33IzKUby//9kCkCa1uRpinAoTvj6rJgQ2jrBEysoxEvfsclvXdna1amyEYbA2EKkjynuB4+L/kleCCaWTpA==}
+    engines: {node: '>=12.*'}
+
   styled-jsx@5.1.6:
     resolution: {integrity: sha512-qSVyDTeMotdvQYoHWLNGwRFJHC+i+ZvdBRYosOFgC+Wg1vx4frN2/RG/NA7SYqqvKNLf39P2LSRA2pu6n0XYZA==}
     engines: {node: '>= 12.0.0'}
@@ -3570,6 +3615,11 @@ snapshots:
       ajv: 8.17.1
       ajv-formats: 3.0.1(ajv@8.17.1)
       fast-uri: 3.1.0
+
+  '@fastify/cors@11.1.0':
+    dependencies:
+      fastify-plugin: 5.1.0
+      toad-cache: 3.7.0
 
   '@fastify/error@4.2.0': {}
 
@@ -4127,14 +4177,14 @@ snapshots:
 
   '@standard-schema/spec@1.0.0': {}
 
-  '@stripe/react-stripe-js@5.2.0(@stripe/stripe-js@8.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@stripe/react-stripe-js@5.0.0(@stripe/stripe-js@8.0.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
-      '@stripe/stripe-js': 8.1.0
+      '@stripe/stripe-js': 8.0.0
       prop-types: 15.8.1
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
-  '@stripe/stripe-js@8.1.0': {}
+  '@stripe/stripe-js@8.0.0': {}
 
   '@swc/helpers@0.5.15':
     dependencies:
@@ -5564,6 +5614,8 @@ snapshots:
       object.assign: 4.1.7
       object.values: 1.2.1
 
+  kafkajs@2.2.4: {}
+
   kareem@2.6.3: {}
 
   keygrip@1.1.0:
@@ -6392,6 +6444,11 @@ snapshots:
   strip-final-newline@3.0.0: {}
 
   strip-json-comments@3.1.1: {}
+
+  stripe@18.0.0:
+    dependencies:
+      '@types/node': 24.8.1
+      qs: 6.14.0
 
   styled-jsx@5.1.6(react@19.1.0):
     dependencies:

@@ -14,7 +14,7 @@ const fetchProducts = async ({
   params: "homepage" | "products";
 }): Promise<Pagination<ProductType>> => {
   // Use absolute URL for server-side fetch
-  const baseUrl = "http://localhost:5001";
+  const baseUrl = process.env.NEXT_PUBLIC_URL;
 
   const queryParams = new URLSearchParams();
   if (category) queryParams.append("category", category);

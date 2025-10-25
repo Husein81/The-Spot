@@ -3,8 +3,6 @@ import dotenv from "dotenv";
 import cors from "cors";
 import { clerkMiddleware } from "@clerk/express";
 import { productRouter, categoryRouter } from "./routes";
-import { main } from "./seed";
-import { prisma } from "@repo/product-db";
 
 dotenv.config();
 
@@ -24,8 +22,7 @@ app.use(clerkMiddleware());
 app.use("/api/products", productRouter);
 app.use("/api/categories", categoryRouter);
 const PORT = process.env.PORT;
-await main();
-await prisma.$disconnect();
+
 app.listen(PORT, () =>
   console.log(`Product server is running on port ${PORT}`)
 );

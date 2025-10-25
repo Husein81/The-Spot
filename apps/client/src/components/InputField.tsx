@@ -11,6 +11,7 @@ type Props = {
   label: string;
   field: AnyFieldApi;
   placeholder?: string;
+  maxLength?: number;
   subLabel?: string;
 } & React.ComponentProps<"input">;
 
@@ -19,6 +20,7 @@ const InputField = ({
   field,
   subLabel,
   placeholder,
+  maxLength,
   type = "text",
 }: Props) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -33,6 +35,7 @@ const InputField = ({
           type={isPassword && showPassword ? "text" : type}
           value={field.state.value}
           placeholder={placeholder}
+          maxLength={maxLength}
           onBlur={field.handleBlur}
           onChange={(e) => field.handleChange(e.target.value)}
         />

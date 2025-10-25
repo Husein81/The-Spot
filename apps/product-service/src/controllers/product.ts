@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { prisma, Prisma } from "@repo/product-db";
+import { producer } from "../utils/kafa";
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
@@ -23,6 +24,10 @@ export const createProduct = async (req: Request, res: Response) => {
     }
 
     const product = await prisma.product.create({ data });
+
+    producer.send("product.created", {
+      value: { id: product.id, name: product.name, price: product.price },
+    });
 
     res.status(201).json(product);
   } catch (error) {
@@ -53,6 +58,10 @@ export const deleteProduct = async (req: Request, res: Response) => {
 
   const deletedProduct = await prisma.product.delete({
     where: { id },
+  });
+
+  producer.send("product.deleted", {
+    value: { id: deletedProduct.id },
   });
 
   return res.status(200).json(deletedProduct);

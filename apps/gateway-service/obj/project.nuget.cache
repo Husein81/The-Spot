@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "y+wzFtXrY/I=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\USER\\Desktop\\React\\The-Spot\\apps\\gateway-service\\gateway-service.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\USER\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.0-rc.2.25502.107\\microsoft.aspnetcore.openapi.10.0.0-rc.2.25502.107.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\system.io.hashing\\8.0.0\\system.io.hashing.8.0.0.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\yarp.reverseproxy\\2.3.0\\yarp.reverseproxy.2.3.0.nupkg.sha512"
+  ],
+  "logs": []
+}

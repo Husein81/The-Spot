@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const fetchProduct = async (id: string): Promise<ProductType> => {
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/products/${id}`
+    `${process.env.NEXT_PUBLIC_URL}/api/products/${id}`
   );
   const data = await res.data;
   return data;

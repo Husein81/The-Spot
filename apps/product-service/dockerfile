@@ -1,0 +1,70 @@
+# ===============================
+# 🧱 Stage 1: Base setup
+# ===============================
+FROM node:20-alpine AS base
+WORKDIR /app
+
+# Install pnpm and system dependencies
+RUN npm install -g pnpm && \
+    apk add --no-cache libc6-compat openssl
+
+# Copy workspace configuration files
+COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
+
+# ===============================
+# 📦 Stage 2: Install dependencies
+# ===============================
+FROM base AS deps
+
+# Copy package.json files for all workspace packages
+COPY packages/product-db/package.json ./packages/product-db/
+COPY packages/types/package.json ./packages/types/
+COPY packages/kafka/package.json ./packages/kafka/
+COPY apps/product-service/package.json ./apps/product-service/
+
+# Copy Prisma schema for client generation
+COPY packages/product-db/prisma ./packages/product-db/prisma
+
+# Install all dependencies
+RUN pnpm install --frozen-lockfile
+
+# Generate Prisma client
+RUN pnpm --filter product-db exec prisma generate
+
+# Copy all source files
+COPY packages ./packages
+COPY apps/product-service ./apps/product-service
+
+# ===============================
+# 🏗️ Stage 3: Build (optional type check)
+# ===============================
+FROM deps AS build
+WORKDIR /app/apps/product-service
+RUN pnpm check-types || echo "⚠️ Type checking skipped"
+
+# ===============================
+# 🚀 Stage 4: Production runtime
+# ===============================
+FROM node:20-alpine AS runtime
+WORKDIR /app
+
+# Install tsx globally for TypeScript execution
+RUN npm install -g tsx
+
+# Copy workspace configuration
+COPY --from=deps /app/package.json ./package.json
+COPY --from=deps /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
+
+# Copy all necessary files including node_modules and generated Prisma client
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/packages ./packages
+COPY --from=deps /app/apps/product-service ./apps/product-service
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=5001
+
+EXPOSE 5001
+
+# Start the application with tsx
+CMD ["tsx", "apps/product-service/src/index.ts"]

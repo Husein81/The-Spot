@@ -47,7 +47,7 @@ const CheckoutForm = ({
       try {
         // Call payment service
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_URL}/payment/process`,
+          `${process.env.NEXT_PUBLIC_API_URL}/payment/process`,
           {
             method: "POST",
             headers: {

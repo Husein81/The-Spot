@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("gateway-service")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+95ab4e25e652b5b6dabd796d76ea718ba694b692")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+150e8587b57f76fee4b2c287d95169eef35b9ceb")]
 [assembly: System.Reflection.AssemblyProductAttribute("gateway-service")]
 [assembly: System.Reflection.AssemblyTitleAttribute("gateway-service")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

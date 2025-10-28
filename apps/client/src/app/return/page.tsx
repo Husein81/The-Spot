@@ -10,7 +10,7 @@ export default async function ReturnPage({
   if (!session_id) return <div>No session id found!</div>;
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_URL}/sessions/${session_id}`
+    `${process.env.NEXT_PUBLIC_API_URL}/sessions/${session_id}`
   );
   const data = await res.json();
 

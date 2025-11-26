@@ -16,7 +16,7 @@ const ProductInteraction = ({
   product,
   selectedColor,
   selectedSize,
-}: Props) => {
+}: Props): React.ReactNode => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();

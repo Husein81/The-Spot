@@ -10,7 +10,9 @@ type Props = {
   }>;
 };
 
-export default async function ProductsPage({ searchParams }: Props) {
+export default async function ProductsPage({
+  searchParams,
+}: Props): Promise<React.ReactNode> {
   const page = (await searchParams).page;
   const limit = (await searchParams).limit;
   const category = (await searchParams).category;

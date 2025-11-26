@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const Footer = () => {
+const Footer = (): React.ReactNode => {
   const year = new Date().getFullYear();
   return (
     <footer className="bg-primary grid rounded-md grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 p-4">

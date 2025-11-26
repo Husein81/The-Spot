@@ -8,7 +8,11 @@ import { useState } from "react";
 import { ShippingFormInputs } from "@repo/types";
 import PaymentForm from "./StripePaymentForm";
 
-const StepsDetails = ({ selectedStep }: { selectedStep: number }) => {
+const StepsDetails = ({
+  selectedStep,
+}: {
+  selectedStep: number;
+}): React.ReactNode => {
   const { cart, removeFromCart } = useCartStore();
   const router = useRouter();
 

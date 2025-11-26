@@ -20,7 +20,7 @@ const Select = ({
   className,
   size = "default",
   onValueChange,
-}: Props) => {
+}: Props): React.ReactNode => {
   return (
     <Shad.Select onValueChange={onValueChange}>
       <Shad.SelectTrigger className={cn(className)} size={size}>

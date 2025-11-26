@@ -3,7 +3,7 @@ import { cn, Separator } from "@repo/ui";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import StepsDetails from "./StepsDetails";
 
-const StepsAction = () => {
+const StepsAction = (): React.ReactNode => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();

@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 type Props = {
   product: ProductType;
 };
-const ProductCard = ({ product }: Props) => {
+const ProductCard = ({ product }: Props): React.ReactNode => {
   const [productTypes, setProductTypes] = useState({
     size: product.sizes[0]!,
     color: product.colors[0]!,

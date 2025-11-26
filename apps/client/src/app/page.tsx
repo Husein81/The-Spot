@@ -5,7 +5,7 @@ export default async function Home({
   searchParams,
 }: {
   searchParams: Promise<{ category: string }>;
-}) {
+}): Promise<React.ReactNode> {
   const category = (await searchParams).category;
   return (
     <div className={""}>

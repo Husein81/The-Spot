@@ -1,16 +1,15 @@
 "use client";
 import { ShippingFormInputs } from "@repo/types";
-import { Button, Icon } from "@repo/ui";
+import { Button, Icon, InputField } from "@repo/ui";
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
-import { FormEvent } from "react";
-import InputField from "./InputField";
+import { FormEvent, ReactNode } from "react";
 
 const ShippingForm = ({
   setShippingForm,
 }: {
   setShippingForm: (value: ShippingFormInputs) => void;
-}) => {
+}): ReactNode => {
   const router = useRouter();
   const form = useForm({
     defaultValues: {

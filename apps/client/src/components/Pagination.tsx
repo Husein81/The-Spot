@@ -18,7 +18,7 @@ export default function Pagination<T>({
   pagination,
   onPageChange,
   maxPageButtons = 5,
-}: Props<T>) {
+}: Props<T>): React.ReactNode {
   const { totalCount, currentPage, totalPages, data } = pagination;
 
   // 🔹 Generate visible page numbers

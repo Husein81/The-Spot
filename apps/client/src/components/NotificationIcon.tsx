@@ -2,7 +2,7 @@
 import { useCartStore } from "@/store/cartStore";
 import { Icon } from "@repo/ui";
 
-const ShoppingCartIcon = ({ icon }: { icon: string }) => {
+const ShoppingCartIcon = ({ icon }: { icon: string }): React.ReactNode => {
   const { cart, hasHydrated } = useCartStore();
 
   if (!hasHydrated) return null;

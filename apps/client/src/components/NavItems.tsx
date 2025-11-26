@@ -9,7 +9,7 @@ type NavItem = {
   icon: string;
 };
 
-const NavItems = () => {
+const NavItems = (): React.ReactNode => {
   const navItems: NavItem[] = [
     {
       href: "/",

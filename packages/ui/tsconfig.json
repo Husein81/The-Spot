@@ -3,6 +3,7 @@
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
+    "rootDir": ".",
     "paths": {
       "@repo/ui/*": [
         "./src/*"

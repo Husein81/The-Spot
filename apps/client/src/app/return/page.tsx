@@ -4,7 +4,7 @@ export default async function ReturnPage({
   searchParams,
 }: {
   searchParams?: Promise<{ session_id: string }>;
-}) {
+}): Promise<React.ReactNode> {
   const session_id = (await searchParams)?.session_id;
 
   if (!session_id) return <div>No session id found!</div>;

@@ -3,7 +3,7 @@ import { UserButton } from "@clerk/nextjs";
 import { Icon } from "@repo/ui";
 import { useRouter } from "next/navigation";
 
-const ProfileButton = () => {
+const ProfileButton = (): React.ReactNode => {
   const router = useRouter();
   return (
     <UserButton>

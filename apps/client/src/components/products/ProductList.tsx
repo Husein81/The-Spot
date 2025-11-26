@@ -36,13 +36,13 @@ const ProductList = async ({
   search,
   params,
 }: {
-  page: string;
-  limit: string;
   category: string;
+  params: "homepage" | "products";
+  limit?: string;
+  page?: string;
   sort?: string;
   search?: string;
-  params: "homepage" | "products";
-}) => {
+}): Promise<React.ReactNode> => {
   const initialData = await fetchProducts({
     category,
     sort,

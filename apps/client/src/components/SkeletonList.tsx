@@ -1,6 +1,6 @@
 import { Skeleton } from "@repo/ui";
 
-const SkeletonList = () => {
+const SkeletonList = (): React.ReactNode  => {
   return (
     <div
       className={

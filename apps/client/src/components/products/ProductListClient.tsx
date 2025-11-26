@@ -20,7 +20,10 @@ type Props = {
   };
 };
 
-const ProductListClient = ({ initialData, searchParams }: Props) => {
+const ProductListClient = ({
+  initialData,
+  searchParams,
+}: Props): React.ReactNode => {
   const router = useRouter();
   const { data: productsPaginated, isLoading } = useGetProducts({
     searchParams,

@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { OrderType } from "@repo/types";
+import type { ReactNode } from "react";
 
 const fetchOrders = async () => {
   const { getToken } = await auth();
@@ -15,7 +16,7 @@ const fetchOrders = async () => {
   return data;
 };
 
-export default async function OrdersPage() {
+export default async function OrdersPage(): Promise<ReactNode> {
   const orders = await fetchOrders();
 
   if (!orders) {

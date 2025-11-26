@@ -1,11 +1,10 @@
 "use client";
 
 import { ShippingFormInputs } from "@repo/types";
-import { Button } from "@repo/ui";
-import { useState } from "react";
+import { Button, InputField } from "@repo/ui";
+import { type ReactNode, useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
-import InputField from "./InputField";
 
 const paymentFormSchema = z.object({
   cardNumber: z
@@ -28,7 +27,7 @@ const CheckoutForm = ({
   shippingForm,
 }: {
   shippingForm: ShippingFormInputs;
-}) => {
+}): ReactNode => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);

@@ -3,7 +3,7 @@ import Image from "next/image";
 import SearchBar from "./SearchBar";
 import NavItems from "./NavItems";
 
-const NavBar = () => {
+const NavBar = (): React.ReactNode => {
   return (
     <nav className="shadow-md h-16 flex justify-between py-1 px-4">
       <Link href="/" className="flex items-center">

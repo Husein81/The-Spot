@@ -1,7 +1,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Select from "./Select";
 
-const Filter = () => {
+const Filter = (): React.ReactNode => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
